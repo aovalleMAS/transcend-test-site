@@ -1,26 +1,306 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Transcend Consent Test</title>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demo Consentimiento (Transcend)</title>
 
-  <!-- Transcend Consent / Airgap Script -->
-  <!-- Debe ir en el <head> y ser el primer script -->
-  <script
-    data-cfasync="false"
-    src="https://transcend-cdn.com/cm/7fe0784a-dcb5-4fee-8517-4c00684b5d98/airgap.js">
-  </script>
+    <!-- Transcend Airgap (debe ir primero en el <head>) -->
+    <script
+      data-cfasync="false"
+      src="https://transcend-cdn.com/cm/7fe0784a-dcb5-4fee-8517-4c00684b5d98/airgap.js"
+    ></script>
 
-</head>
-<body style="font-family: Arial; text-align:center; padding:40px;">
+    <style>
+      :root {
+        --bg: #0b1220;
+        --card: #111a2e;
+        --text: #e8eefc;
+        --muted: #a9b7d7;
+        --accent: #6ea8fe;
+        --ok: #34d399;
+        --warn: #fbbf24;
+        --bad: #fb7185;
+        --border: rgba(255,255,255,.12);
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+        background: radial-gradient(900px 500px at 20% 0%, #1b2a52 0%, var(--bg) 55%);
+        color: var(--text);
+      }
+      .wrap { max-width: 980px; margin: 48px auto; padding: 0 16px; }
+      .grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 18px; }
+      @media (max-width: 920px) { .grid { grid-template-columns: 1fr; } }
 
-  <h1>Transcend Consent Test Page</h1>
-  <p>This page is used to test the Transcend Consent banner.</p>
+      .card {
+        background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      }
+      h1 { font-size: 22px; margin: 0 0 6px; }
+      p { margin: 0 0 14px; color: var(--muted); line-height: 1.45; }
 
-  <button onclick="alert('Test button clicked!')">
-    Test Button
-  </button>
+      label { display: block; font-size: 13px; color: var(--muted); margin: 10px 0 6px; }
+      input[type="text"], input[type="email"], input[type="password"] {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(0,0,0,.25);
+        color: var(--text);
+        outline: none;
+      }
+      input:focus { border-color: rgba(110,168,254,.6); box-shadow: 0 0 0 3px rgba(110,168,254,.12); }
 
-</body>
+      .checks { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
+      .checkrow {
+        display: flex; gap: 10px; align-items: flex-start;
+        padding: 10px 10px; border-radius: 12px;
+        border: 1px solid rgba(255,255,255,.06);
+        background: rgba(0,0,0,.18);
+        margin-bottom: 10px;
+      }
+      .checkrow input { margin-top: 3px; transform: scale(1.1); }
+      .checkrow .title { font-weight: 600; }
+      .checkrow .desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+      .pill {
+        display: inline-block; font-size: 11px; padding: 2px 8px;
+        border-radius: 999px; border: 1px solid var(--border);
+        margin-left: 6px; color: var(--muted);
+      }
+      .req { color: var(--warn); }
+      .opt { color: var(--accent); }
+
+      .row { display:flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+      button {
+        border: 1px solid var(--border);
+        background: rgba(110,168,254,.15);
+        color: var(--text);
+        padding: 10px 12px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      button.primary { background: rgba(52,211,153,.18); }
+      button.danger { background: rgba(251,113,133,.16); }
+      button:hover { filter: brightness(1.05); }
+
+      .status {
+        margin-top: 12px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(0,0,0,.22);
+        font-size: 13px;
+      }
+      .status.ok { border-color: rgba(52,211,153,.35); }
+      .status.bad { border-color: rgba(251,113,133,.35); }
+      code { color: #c7d2fe; }
+      .small { font-size: 12px; color: var(--muted); }
+      a { color: #93c5fd; }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="grid">
+        <!-- FORM -->
+        <div class="card">
+          <h1>Registro con Consentimiento (Demo)</h1>
+          <p>
+            Esta página simula un flujo típico: el usuario crea cuenta y entrega consentimientos.
+            Guardamos el resultado localmente (en el navegador) para pruebas.
+          </p>
+
+          <form id="signupForm">
+            <label for="name">Nombre</label>
+            <input id="name" type="text" placeholder="Ana" required />
+
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="ana@email.com" required />
+
+            <label for="password">Contraseña</label>
+            <input id="password" type="password" placeholder="••••••••" minlength="6" required />
+
+            <div class="checks">
+              <div class="checkrow">
+                <input id="terms" type="checkbox" />
+                <div>
+                  <div class="title">
+                    Acepto Términos y Política de Privacidad
+                    <span class="pill req">Obligatorio</span>
+                  </div>
+                  <div class="desc">
+                    Confirma que leíste y aceptas los términos y la política de privacidad del sitio.
+                  </div>
+                </div>
+              </div>
+
+              <div class="checkrow">
+                <input id="dpConsent" type="checkbox" />
+                <div>
+                  <div class="title">
+                    Consentimiento de tratamiento de datos personales
+                    <span class="pill req">Obligatorio</span>
+                  </div>
+                  <div class="desc">
+                    Autorizas el uso de tus datos para crear tu cuenta, operar el servicio y cumplir obligaciones legales.
+                    Puedes retirar el consentimiento según corresponda.
+                  </div>
+                </div>
+              </div>
+
+              <div class="checkrow">
+                <input id="marketing" type="checkbox" />
+                <div>
+                  <div class="title">
+                    Quiero recibir marketing y promociones
+                    <span class="pill opt">Opcional</span>
+                  </div>
+                  <div class="desc">
+                    Emails de promociones, novedades y descuentos. Puedes desuscribirte en cualquier momento.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <button class="primary" type="submit">Crear cuenta</button>
+              <button type="button" id="viewBtn">Ver consentimiento guardado</button>
+              <button class="danger" type="button" id="clearBtn">Borrar consentimiento</button>
+            </div>
+
+            <div id="status" class="status" style="display:none;"></div>
+            <div class="small" style="margin-top:10px;">
+              Tip: abre DevTools → Application → Local Storage para ver lo guardado en <code>demo_consent</code>.
+            </div>
+          </form>
+        </div>
+
+        <!-- INFO -->
+        <div class="card">
+          <h1>Qué se guarda (demo)</h1>
+          <p>
+            Al enviar el formulario guardamos:
+          </p>
+          <ul class="small">
+            <li>Email (solo para demo)</li>
+            <li>Consentimiento términos (true/false)</li>
+            <li>Consentimiento datos personales (true/false)</li>
+            <li>Marketing (true/false)</li>
+            <li>Timestamp (fecha/hora)</li>
+          </ul>
+          <p class="small">
+            Esto NO reemplaza el consentimiento real. Para lo real: configura <b>Consent Management</b> en Transcend
+            (Regional Experiences, publish, domains, etc.).
+          </p>
+
+          <div class="status" style="margin-top:14px;">
+            Si tu banner de Transcend aparece arriba/abajo, estás OK 👍<br />
+            Si no aparece, revisa: <b>Publish</b> + <b>Allowed domains</b> (GitHub Pages).
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const KEY = "demo_consent";
+
+      function showStatus(type, html) {
+        const el = document.getElementById("status");
+        el.style.display = "block";
+        el.className = "status " + (type || "");
+        el.innerHTML = html;
+      }
+
+      function getConsent() {
+        const raw = localStorage.getItem(KEY);
+        return raw ? JSON.parse(raw) : null;
+      }
+
+      function setConsent(data) {
+        localStorage.setItem(KEY, JSON.stringify(data));
+      }
+
+      function clearConsent() {
+        localStorage.removeItem(KEY);
+      }
+
+      document.getElementById("signupForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim().toLowerCase();
+        const terms = document.getElementById("terms").checked;
+        const dpConsent = document.getElementById("dpConsent").checked;
+        const marketing = document.getElementById("marketing").checked;
+
+        if (!terms || !dpConsent) {
+          showStatus(
+            "bad",
+            "❌ Faltan consentimientos obligatorios. Marca <b>Términos</b> y <b>Datos personales</b>."
+          );
+          return;
+        }
+
+        const payload = {
+          name,
+          email,
+          consents: {
+            terms,
+            personalDataProcessing: dpConsent,
+            marketing,
+          },
+          timestamp: new Date().toISOString(),
+        };
+
+        setConsent(payload);
+
+        showStatus(
+          "ok",
+          `✅ Consentimiento guardado.<br/>
+           <span class="small">Email: <b>${email}</b><br/>
+           Fecha: <code>${payload.timestamp}</code></span>`
+        );
+      });
+
+      document.getElementById("viewBtn").addEventListener("click", () => {
+        const data = getConsent();
+        if (!data) {
+          showStatus("bad", "ℹ️ No hay consentimiento guardado todavía.");
+          return;
+        }
+
+        showStatus(
+          "",
+          `📄 <b>Consentimiento actual</b><br/>
+           <span class="small">
+             Email: <b>${data.email}</b><br/>
+             Términos: <b>${data.consents.terms}</b><br/>
+             Datos personales: <b>${data.consents.personalDataProcessing}</b><br/>
+             Marketing: <b>${data.consents.marketing}</b><br/>
+             Fecha: <code>${data.timestamp}</code>
+           </span>`
+        );
+      });
+
+      document.getElementById("clearBtn").addEventListener("click", () => {
+        clearConsent();
+        showStatus("", "🗑️ Consentimiento borrado (localStorage).");
+      });
+
+      // Autocargar si ya existe
+      const existing = getConsent();
+      if (existing) {
+        document.getElementById("name").value = existing.name || "";
+        document.getElementById("email").value = existing.email || "";
+        document.getElementById("terms").checked = !!existing.consents?.terms;
+        document.getElementById("dpConsent").checked = !!existing.consents?.personalDataProcessing;
+        document.getElementById("marketing").checked = !!existing.consents?.marketing;
+      }
+    </script>
+  </body>
 </html>
