@@ -146,6 +146,12 @@
         border-left: 3px solid rgba(110,168,254,.5);
         padding-left: 10px;
       }
+      .hr{
+        margin: 12px 0;
+        height: 1px;
+        background: rgba(255,255,255,.10);
+        border: 0;
+      }
     </style>
   </head>
 
@@ -156,7 +162,8 @@
           <h1>Registro con Consentimiento (Demo)</h1>
           <p>
             Esta página simula un flujo típico: el usuario crea cuenta y entrega consentimientos.
-            Guardamos el resultado localmente (en el navegador) y también enviamos la señal a Transcend (Airgap).
+            Guardamos el resultado localmente (en el navegador).
+            <b>Para cookies (Analytics/Advertising), el consentimiento oficial se gestiona en el CMP de Transcend.</b>
           </p>
 
           <form id="consentForm">
@@ -200,16 +207,18 @@
                 </div>
               </div>
 
+              <hr class="hr" />
+
               <div class="check">
                 <div class="row">
                   <input id="marketing" type="checkbox" />
                   <div>
                     <div class="title">
-                      Quiero recibir marketing y promociones
-                      <span class="pill opt">Opcional</span>
+                      Cookies: Anuncios/Marketing
+                      <span class="pill opt">CMP Transcend</span>
                     </div>
                     <div class="help">
-                      Emails de promociones, novedades y descuentos. Puedes desuscribirte en cualquier momento.
+                      Esto se registra oficialmente en el banner/modal de Transcend.
                     </div>
                   </div>
                 </div>
@@ -220,11 +229,11 @@
                   <input id="analytics" type="checkbox" checked />
                   <div>
                     <div class="title">
-                      Permitir analíticas (cookies/medición)
-                      <span class="pill opt">Opcional</span>
+                      Cookies: Analíticas (medición)
+                      <span class="pill opt">CMP Transcend</span>
                     </div>
                     <div class="help">
-                      Nos ayuda a entender el uso del sitio y mejorar su desempeño.
+                      Esto se registra oficialmente en el banner/modal de Transcend.
                     </div>
                   </div>
                 </div>
@@ -232,7 +241,8 @@
             </div>
 
             <div class="actions">
-              <button type="submit">Crear cuenta</button>
+              <button type="submit" id="submitBtn">Crear cuenta</button>
+              <button type="button" class="secondary" id="openCmpBtn">Abrir preferencias de cookies (Transcend)</button>
               <button type="button" class="secondary" id="viewBtn">Ver consentimiento guardado</button>
               <button type="button" class="danger" id="clearBtn">Borrar consentimiento</button>
             </div>
@@ -241,28 +251,23 @@
 
             <div class="note">
               Tip: abre DevTools → Application → Local Storage y busca la clave <code>demo_consent</code>.
+              <br />
+              Para Transcend, revisa las <b>cookies/localStorage</b> que crea el CMP y/o el dashboard de Consent.
             </div>
           </form>
         </div>
 
         <div class="card">
-          <h1>Qué se guarda (demo)</h1>
-          <p>Al enviar el formulario guardamos:</p>
+          <h1>Qué pasa realmente</h1>
+          <p><b>Dos registros distintos:</b></p>
           <ul>
-            <li>Email (solo para demo)</li>
-            <li>Consentimiento términos (true/false)</li>
-            <li>Consentimiento datos personales (true/false)</li>
-            <li>Marketing (true/false)</li>
-            <li>Analytics (true/false)</li>
-            <li>Timestamp (fecha/hora)</li>
+            <li><b>Cuenta / datos personales</b> (términos + tratamiento de datos): lo guardamos en <code>demo_consent</code> (demo).</li>
+            <li><b>Cookies (Analytics/Advertising)</b>: el consentimiento oficial lo guarda <b>Transcend CMP</b>.</li>
           </ul>
+
           <p class="note">
-            Además, después de guardar, enviamos el consentimiento a Transcend con
-            <code>window.transcend.consent.setConsent(...)</code>.
-          </p>
-          <p class="note">
-            Si no ves efectos, revisa que tu dominio esté permitido en Transcend (Allowed domains),
-            y que la experiencia regional aplique a tu ubicación.
+            Tu bundle expone <code>showConsentManager()</code> pero <b>no expone</b> <code>setConsent()</code>.
+            Por eso, desde tu HTML no podemos “escribir” el consentimiento programáticamente: debemos abrir el CMP para que el usuario confirme ahí.
           </p>
         </div>
       </div>
@@ -273,6 +278,8 @@
       const statusBox = document.getElementById("statusBox");
       const viewBtn = document.getElementById("viewBtn");
       const clearBtn = document.getElementById("clearBtn");
+      const openCmpBtn = document.getElementById("openCmpBtn");
+      const submitBtn = document.getElementById("submitBtn");
 
       function setStatus(msg, type) {
         statusBox.textContent = msg;
@@ -304,7 +311,53 @@
         localStorage.removeItem("demo_consent");
       }
 
-      form.addEventListener("submit", (e) => {
+      function openTranscendCMP() {
+        const t = window.transcend;
+        if (!t) return false;
+
+        // locale opcional (si quieres forzar)
+        try {
+          if (t.setActiveLocale) t.setActiveLocale("es-CL");
+        } catch {}
+
+        if (typeof t.showConsentManager === "function") {
+          t.showConsentManager();
+          return true;
+        }
+        if (typeof t.toggleConsentManager === "function") {
+          t.toggleConsentManager();
+          return true;
+        }
+        return false;
+      }
+
+      // Espera a que el CMP se cierre antes de continuar
+      function waitForCMPToClose({ timeoutMs = 60000 } = {}) {
+        return new Promise((resolve) => {
+          const t = window.transcend;
+          if (!t || typeof t.getViewState !== "function") return resolve("NO_API");
+
+          const start = Date.now();
+          const tick = () => {
+            let state;
+            try { state = t.getViewState(); } catch { state = "UNKNOWN"; }
+
+            // estados típicos: Hidden / Closed
+            if (state === "Hidden" || state === "Closed") return resolve(state);
+
+            if (Date.now() - start > timeoutMs) return resolve("TIMEOUT");
+            setTimeout(tick, 250);
+          };
+          tick();
+        });
+      }
+
+      openCmpBtn.addEventListener("click", () => {
+        const ok = openTranscendCMP();
+        if (!ok) setStatus("⚠️ No pude abrir el CMP de Transcend. Revisa que airgap.js cargó y que el dominio está permitido.", "bad");
+      });
+
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const { name, email, terms, personalData, marketing, analytics } = readFormValues();
@@ -332,29 +385,63 @@
         // 1) Guardar localmente (demo)
         saveConsent(payload);
 
-        // 2) ✅ Después de guardar: enviar señal a Transcend (Airgap)
-        // Ajusta los keys si tus "purpose slugs" son distintos en Transcend
-        try {
-          if (window.transcend && window.transcend.consent && typeof window.transcend.consent.setConsent === "function") {
-            window.transcend.consent.setConsent({
-              // Slugs típicos:
-              Advertising: marketing,   // marketing/promos
-              Analytics: analytics,     // analíticas
-              Functional: true,         // normalmente "siempre on" si tu sitio lo requiere
-              SaleOfInfo: false,        // demo
-              Essential: true           // normalmente "No Consent Needed"
-            });
+        // 2) Cookies: consentimiento oficial en Transcend CMP
+        // Si el usuario marcó Analytics o Advertising/Marketing, forzamos a confirmar en el CMP.
+        const wantsCookieConsent = marketing || analytics;
+
+        if (wantsCookieConsent) {
+          // Deshabilita submit mientras confirma
+          submitBtn.disabled = true;
+
+          const opened = openTranscendCMP();
+          if (!opened) {
+            submitBtn.disabled = false;
+            setStatus(
+              "✅ Consentimiento de cuenta guardado (demo).\n" +
+              "⚠️ No pude abrir el CMP de Transcend para registrar cookies.\n" +
+              "Revisa Allowed Domains / Deploy y que el banner esté habilitado.",
+              "ok"
+            );
+            return;
           }
-        } catch (err) {
-          // no bloqueamos el flujo demo si falla
-          console.warn("Transcend setConsent error:", err);
+
+          setStatus(
+            "✅ Consentimiento de cuenta guardado (demo).\n\n" +
+            "Ahora confirma el consentimiento de COOKIES en el modal de Transcend:\n" +
+            `- Analítica: ${analytics ? "ON" : "OFF"}\n` +
+            `- Anuncios/Marketing: ${marketing ? "ON" : "OFF"}\n\n` +
+            "Cuando cierres el modal, finalizamos el registro.",
+            "ok"
+          );
+
+          const closedState = await waitForCMPToClose({ timeoutMs: 60000 });
+          submitBtn.disabled = false;
+
+          if (closedState === "TIMEOUT") {
+            setStatus(
+              "✅ Consentimiento de cuenta guardado (demo).\n" +
+              "⚠️ No pude detectar el cierre del CMP (timeout).\n" +
+              "Igual puedes validar el consentimiento de cookies revisando el banner/Transcend.",
+              "ok"
+            );
+            return;
+          }
+
+          setStatus(
+            "✅ Registro completado.\n" +
+            "Cuenta (demo) guardada en localStorage: demo_consent\n" +
+            "Cookies: consentimiento gestionado por Transcend CMP.\n\n" +
+            `Email: ${email}\nFecha: ${payload.timestamp}`,
+            "ok"
+          );
+          return;
         }
 
+        // Si no pidió cookies, listo.
         setStatus(
-          "✅ Consentimiento guardado.\n" +
-          "Email: " + email + "\n" +
-          "Fecha: " + payload.timestamp + "\n\n" +
-          "Se intentó enviar setConsent() a Transcend (revisa consola/Transcend dashboard).",
+          "✅ Registro completado (sin cambios de cookies).\n" +
+          "Cuenta (demo) guardada en localStorage: demo_consent\n\n" +
+          `Email: ${email}\nFecha: ${payload.timestamp}`,
           "ok"
         );
       });
@@ -370,23 +457,19 @@
 
       clearBtn.addEventListener("click", () => {
         clearConsent();
+        setStatus(
+          "🗑️ Consentimiento demo borrado (localStorage).\n" +
+          "Nota: esto NO borra el consentimiento de cookies del CMP (Transcend) porque depende del banner y su almacenamiento.",
+          ""
+        );
+      });
 
-        // Opcional: también “resetear” en Transcend (depende de tu config)
-        try {
-          if (window.transcend && window.transcend.consent && typeof window.transcend.consent.setConsent === "function") {
-            window.transcend.consent.setConsent({
-              Advertising: false,
-              Analytics: false,
-              Functional: true,
-              SaleOfInfo: false,
-              Essential: true
-            });
-          }
-        } catch (err) {
-          console.warn("Transcend reset error:", err);
-        }
-
-        setStatus("🗑️ Consentimiento borrado (localStorage) y se intentó resetear en Transcend.", "");
+      // UX: si el usuario cambia checkboxes de cookies, abre CMP (opcional)
+      document.getElementById("marketing").addEventListener("change", () => {
+        openTranscendCMP();
+      });
+      document.getElementById("analytics").addEventListener("change", () => {
+        openTranscendCMP();
       });
     </script>
   </body>
