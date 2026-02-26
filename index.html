@@ -12,295 +12,382 @@
     ></script>
 
     <style>
-      :root {
-        --bg: #0b1220;
-        --card: #111a2e;
-        --text: #e8eefc;
-        --muted: #a9b7d7;
-        --accent: #6ea8fe;
-        --ok: #34d399;
-        --warn: #fbbf24;
-        --bad: #fb7185;
-        --border: rgba(255,255,255,.12);
+      :root{
+        --bg:#0b1220;
+        --card:#101a2e;
+        --text:#e8eefc;
+        --muted:#a9b7d7;
+        --border:rgba(255,255,255,.12);
+        --accent:#6ea8fe;
+        --ok:#39d98a;
+        --warn:#ffb020;
+        --bad:#ff6b6b;
       }
-      body {
-        margin: 0;
-        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-        background: radial-gradient(900px 500px at 20% 0%, #1b2a52 0%, var(--bg) 55%);
-        color: var(--text);
+      *{box-sizing:border-box}
+      body{
+        margin:0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: radial-gradient(1200px 600px at 30% 10%, rgba(110,168,254,.20), transparent 60%),
+                    radial-gradient(900px 600px at 80% 40%, rgba(57,217,138,.15), transparent 60%),
+                    var(--bg);
+        color:var(--text);
       }
-      .wrap { max-width: 980px; margin: 48px auto; padding: 0 16px; }
-      .grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 18px; }
-      @media (max-width: 920px) { .grid { grid-template-columns: 1fr; } }
-
-      .card {
+      .wrap{
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 16px;
+      }
+      .grid{
+        display:grid;
+        grid-template-columns: 1.1fr .9fr;
+        gap: 16px;
+      }
+      @media (max-width: 900px){
+        .grid{grid-template-columns:1fr}
+      }
+      .card{
         background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
         border: 1px solid var(--border);
         border-radius: 16px;
         padding: 18px;
-        box-shadow: 0 20px 60px rgba(0,0,0,.35);
+        backdrop-filter: blur(10px);
       }
-      h1 { font-size: 22px; margin: 0 0 6px; }
-      p { margin: 0 0 14px; color: var(--muted); line-height: 1.45; }
-
-      label { display: block; font-size: 13px; color: var(--muted); margin: 10px 0 6px; }
-      input[type="text"], input[type="email"], input[type="password"] {
+      h1{margin:0 0 8px; font-size: 22px}
+      p{margin:0 0 12px; color: var(--muted); line-height: 1.5}
+      label{display:block; font-size: 13px; color: var(--muted); margin: 10px 0 6px}
+      input[type="text"], input[type="email"], input[type="password"]{
         width: 100%;
-        padding: 10px 12px;
-        border-radius: 12px;
+        border-radius: 10px;
         border: 1px solid var(--border);
-        background: rgba(0,0,0,.25);
+        background: rgba(255,255,255,.06);
         color: var(--text);
+        padding: 10px 12px;
         outline: none;
       }
-      input:focus { border-color: rgba(110,168,254,.6); box-shadow: 0 0 0 3px rgba(110,168,254,.12); }
-
-      .checks { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
-      .checkrow {
-        display: flex; gap: 10px; align-items: flex-start;
-        padding: 10px 10px; border-radius: 12px;
-        border: 1px solid rgba(255,255,255,.06);
-        background: rgba(0,0,0,.18);
-        margin-bottom: 10px;
+      input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus{
+        border-color: rgba(110,168,254,.8);
+        box-shadow: 0 0 0 3px rgba(110,168,254,.15);
       }
-      .checkrow input { margin-top: 3px; transform: scale(1.1); }
-      .checkrow .title { font-weight: 600; }
-      .checkrow .desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
-      .pill {
-        display: inline-block; font-size: 11px; padding: 2px 8px;
-        border-radius: 999px; border: 1px solid var(--border);
-        margin-left: 6px; color: var(--muted);
+      .checks{
+        margin-top: 14px;
+        display:grid;
+        gap: 10px;
       }
-      .req { color: var(--warn); }
-      .opt { color: var(--accent); }
-
-      .row { display:flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
-      button {
+      .check{
         border: 1px solid var(--border);
-        background: rgba(110,168,254,.15);
+        background: rgba(255,255,255,.04);
+        border-radius: 12px;
+        padding: 10px 12px;
+      }
+      .row{
+        display:flex; align-items:flex-start; gap: 10px;
+      }
+      .row input{margin-top: 3px}
+      .title{
+        display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+        font-weight: 700;
+      }
+      .pill{
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+      }
+      .pill.req{color: #ffd18b; border-color: rgba(255,177,32,.35); background: rgba(255,177,32,.12)}
+      .pill.opt{color: #a7d5ff; border-color: rgba(110,168,254,.35); background: rgba(110,168,254,.10)}
+      .help{font-size: 12px; color: var(--muted); margin-top: 4px}
+      .actions{
+        margin-top: 14px;
+        display:flex; gap: 10px; flex-wrap: wrap;
+      }
+      button{
+        border: 0;
+        border-radius: 12px;
+        padding: 10px 14px;
+        color: #07121f;
+        background: var(--accent);
+        font-weight: 700;
+        cursor:pointer;
+      }
+      button.secondary{
+        background: rgba(255,255,255,.10);
         color: var(--text);
-        padding: 10px 12px;
-        border-radius: 12px;
-        cursor: pointer;
-        font-weight: 600;
-      }
-      button.primary { background: rgba(52,211,153,.18); }
-      button.danger { background: rgba(251,113,133,.16); }
-      button:hover { filter: brightness(1.05); }
-
-      .status {
-        margin-top: 12px;
-        padding: 10px 12px;
-        border-radius: 12px;
         border: 1px solid var(--border);
-        background: rgba(0,0,0,.22);
-        font-size: 13px;
       }
-      .status.ok { border-color: rgba(52,211,153,.35); }
-      .status.bad { border-color: rgba(251,113,133,.35); }
-      code { color: #c7d2fe; }
-      .small { font-size: 12px; color: var(--muted); }
-      a { color: #93c5fd; }
+      button.danger{
+        background: rgba(255,107,107,.15);
+        color: var(--text);
+        border: 1px solid rgba(255,107,107,.35);
+      }
+      .status{
+        margin-top: 14px;
+        border-radius: 12px;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,.04);
+        color: var(--muted);
+        font-size: 13px;
+        white-space: pre-wrap;
+      }
+      .ok{color: var(--ok)}
+      .bad{color: var(--bad)}
+      code{
+        background: rgba(255,255,255,.08);
+        padding: 1px 6px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+      ul{margin: 8px 0 0 18px; color: var(--muted)}
+      .note{
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--muted);
+        border-left: 3px solid rgba(110,168,254,.5);
+        padding-left: 10px;
+      }
     </style>
   </head>
 
   <body>
     <div class="wrap">
       <div class="grid">
-        <!-- FORM -->
         <div class="card">
           <h1>Registro con Consentimiento (Demo)</h1>
           <p>
             Esta página simula un flujo típico: el usuario crea cuenta y entrega consentimientos.
-            Guardamos el resultado localmente (en el navegador) para pruebas.
+            Guardamos el resultado localmente (en el navegador) y también enviamos la señal a Transcend (Airgap).
           </p>
 
-          <form id="signupForm">
+          <form id="consentForm">
             <label for="name">Nombre</label>
-            <input id="name" type="text" placeholder="Ana" required />
+            <input id="name" type="text" value="Alfredo Ovalle" required />
 
             <label for="email">Email</label>
-            <input id="email" type="email" placeholder="ana@email.com" required />
+            <input id="email" type="email" value="aovalle@miuandes.cl" required />
 
             <label for="password">Contraseña</label>
-            <input id="password" type="password" placeholder="••••••••" minlength="6" required />
+            <input id="password" type="password" value="demo1234" required />
 
             <div class="checks">
-              <div class="checkrow">
-                <input id="terms" type="checkbox" />
-                <div>
-                  <div class="title">
-                    Acepto Términos y Política de Privacidad
-                    <span class="pill req">Obligatorio</span>
-                  </div>
-                  <div class="desc">
-                    Confirma que leíste y aceptas los términos y la política de privacidad del sitio.
-                  </div>
-                </div>
-              </div>
-
-              <div class="checkrow">
-                <input id="dpConsent" type="checkbox" />
-                <div>
-                  <div class="title">
-                    Consentimiento de tratamiento de datos personales
-                    <span class="pill req">Obligatorio</span>
-                  </div>
-                  <div class="desc">
-                    Autorizas el uso de tus datos para crear tu cuenta, operar el servicio y cumplir obligaciones legales.
-                    Puedes retirar el consentimiento según corresponda.
+              <div class="check">
+                <div class="row">
+                  <input id="terms" type="checkbox" checked />
+                  <div>
+                    <div class="title">
+                      Acepto Términos y Política de Privacidad
+                      <span class="pill req">Obligatorio</span>
+                    </div>
+                    <div class="help">
+                      Confirma que leíste y aceptas los términos y la política de privacidad del sitio.
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div class="checkrow">
-                <input id="marketing" type="checkbox" />
-                <div>
-                  <div class="title">
-                    Quiero recibir marketing y promociones
-                    <span class="pill opt">Opcional</span>
+              <div class="check">
+                <div class="row">
+                  <input id="personalData" type="checkbox" checked />
+                  <div>
+                    <div class="title">
+                      Consentimiento de tratamiento de datos personales
+                      <span class="pill req">Obligatorio</span>
+                    </div>
+                    <div class="help">
+                      Autorizas el uso de tus datos para crear tu cuenta, operar el servicio y cumplir obligaciones legales.
+                    </div>
                   </div>
-                  <div class="desc">
-                    Emails de promociones, novedades y descuentos. Puedes desuscribirte en cualquier momento.
+                </div>
+              </div>
+
+              <div class="check">
+                <div class="row">
+                  <input id="marketing" type="checkbox" />
+                  <div>
+                    <div class="title">
+                      Quiero recibir marketing y promociones
+                      <span class="pill opt">Opcional</span>
+                    </div>
+                    <div class="help">
+                      Emails de promociones, novedades y descuentos. Puedes desuscribirte en cualquier momento.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="check">
+                <div class="row">
+                  <input id="analytics" type="checkbox" checked />
+                  <div>
+                    <div class="title">
+                      Permitir analíticas (cookies/medición)
+                      <span class="pill opt">Opcional</span>
+                    </div>
+                    <div class="help">
+                      Nos ayuda a entender el uso del sitio y mejorar su desempeño.
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="row">
-              <button class="primary" type="submit">Crear cuenta</button>
-              <button type="button" id="viewBtn">Ver consentimiento guardado</button>
-              <button class="danger" type="button" id="clearBtn">Borrar consentimiento</button>
+            <div class="actions">
+              <button type="submit">Crear cuenta</button>
+              <button type="button" class="secondary" id="viewBtn">Ver consentimiento guardado</button>
+              <button type="button" class="danger" id="clearBtn">Borrar consentimiento</button>
             </div>
 
-            <div id="status" class="status" style="display:none;"></div>
-            <div class="small" style="margin-top:10px;">
-              Tip: abre DevTools → Application → Local Storage para ver lo guardado en <code>demo_consent</code>.
+            <div class="status" id="statusBox">Listo. Completa el formulario y presiona “Crear cuenta”.</div>
+
+            <div class="note">
+              Tip: abre DevTools → Application → Local Storage y busca la clave <code>demo_consent</code>.
             </div>
           </form>
         </div>
 
-        <!-- INFO -->
         <div class="card">
           <h1>Qué se guarda (demo)</h1>
-          <p>
-            Al enviar el formulario guardamos:
-          </p>
-          <ul class="small">
+          <p>Al enviar el formulario guardamos:</p>
+          <ul>
             <li>Email (solo para demo)</li>
             <li>Consentimiento términos (true/false)</li>
             <li>Consentimiento datos personales (true/false)</li>
             <li>Marketing (true/false)</li>
+            <li>Analytics (true/false)</li>
             <li>Timestamp (fecha/hora)</li>
           </ul>
-          <p class="small">
-            Esto NO reemplaza el consentimiento real. Para lo real: configura <b>Consent Management</b> en Transcend
-            (Regional Experiences, publish, domains, etc.).
+          <p class="note">
+            Además, después de guardar, enviamos el consentimiento a Transcend con
+            <code>window.transcend.consent.setConsent(...)</code>.
           </p>
-
-          <div class="status" style="margin-top:14px;">
-            Si tu banner de Transcend aparece arriba/abajo, estás OK 👍<br />
-            Si no aparece, revisa: <b>Publish</b> + <b>Allowed domains</b> (GitHub Pages).
-          </div>
+          <p class="note">
+            Si no ves efectos, revisa que tu dominio esté permitido en Transcend (Allowed domains),
+            y que la experiencia regional aplique a tu ubicación.
+          </p>
         </div>
       </div>
     </div>
 
     <script>
-      const KEY = "demo_consent";
+      const form = document.getElementById("consentForm");
+      const statusBox = document.getElementById("statusBox");
+      const viewBtn = document.getElementById("viewBtn");
+      const clearBtn = document.getElementById("clearBtn");
 
-      function showStatus(type, html) {
-        const el = document.getElementById("status");
-        el.style.display = "block";
-        el.className = "status " + (type || "");
-        el.innerHTML = html;
+      function setStatus(msg, type) {
+        statusBox.textContent = msg;
+        statusBox.classList.remove("ok", "bad");
+        if (type) statusBox.classList.add(type);
       }
 
-      function getConsent() {
-        const raw = localStorage.getItem(KEY);
+      function readFormValues() {
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const terms = document.getElementById("terms").checked;
+        const personalData = document.getElementById("personalData").checked;
+        const marketing = document.getElementById("marketing").checked;
+        const analytics = document.getElementById("analytics").checked;
+
+        return { name, email, terms, personalData, marketing, analytics };
+      }
+
+      function saveConsent(payload) {
+        localStorage.setItem("demo_consent", JSON.stringify(payload));
+      }
+
+      function loadConsent() {
+        const raw = localStorage.getItem("demo_consent");
         return raw ? JSON.parse(raw) : null;
       }
 
-      function setConsent(data) {
-        localStorage.setItem(KEY, JSON.stringify(data));
-      }
-
       function clearConsent() {
-        localStorage.removeItem(KEY);
+        localStorage.removeItem("demo_consent");
       }
 
-      document.getElementById("signupForm").addEventListener("submit", (e) => {
+      form.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim().toLowerCase();
-        const terms = document.getElementById("terms").checked;
-        const dpConsent = document.getElementById("dpConsent").checked;
-        const marketing = document.getElementById("marketing").checked;
+        const { name, email, terms, personalData, marketing, analytics } = readFormValues();
 
-        if (!terms || !dpConsent) {
-          showStatus(
-            "bad",
-            "❌ Faltan consentimientos obligatorios. Marca <b>Términos</b> y <b>Datos personales</b>."
-          );
+        // Validaciones mínimas para demo
+        if (!terms) {
+          setStatus("❌ Debes aceptar Términos y Política de Privacidad.", "bad");
+          return;
+        }
+        if (!personalData) {
+          setStatus("❌ Debes aceptar el tratamiento de datos personales (obligatorio).", "bad");
           return;
         }
 
         const payload = {
           name,
           email,
-          consents: {
-            terms,
-            personalDataProcessing: dpConsent,
-            marketing,
-          },
+          terms,
+          personalData,
+          marketing,
+          analytics,
           timestamp: new Date().toISOString(),
         };
 
-        setConsent(payload);
+        // 1) Guardar localmente (demo)
+        saveConsent(payload);
 
-        showStatus(
-          "ok",
-          `✅ Consentimiento guardado.<br/>
-           <span class="small">Email: <b>${email}</b><br/>
-           Fecha: <code>${payload.timestamp}</code></span>`
-        );
-      });
-
-      document.getElementById("viewBtn").addEventListener("click", () => {
-        const data = getConsent();
-        if (!data) {
-          showStatus("bad", "ℹ️ No hay consentimiento guardado todavía.");
-          return;
+        // 2) ✅ Después de guardar: enviar señal a Transcend (Airgap)
+        // Ajusta los keys si tus "purpose slugs" son distintos en Transcend
+        try {
+          if (window.transcend && window.transcend.consent && typeof window.transcend.consent.setConsent === "function") {
+            window.transcend.consent.setConsent({
+              // Slugs típicos:
+              Advertising: marketing,   // marketing/promos
+              Analytics: analytics,     // analíticas
+              Functional: true,         // normalmente "siempre on" si tu sitio lo requiere
+              SaleOfInfo: false,        // demo
+              Essential: true           // normalmente "No Consent Needed"
+            });
+          }
+        } catch (err) {
+          // no bloqueamos el flujo demo si falla
+          console.warn("Transcend setConsent error:", err);
         }
 
-        showStatus(
-          "",
-          `📄 <b>Consentimiento actual</b><br/>
-           <span class="small">
-             Email: <b>${data.email}</b><br/>
-             Términos: <b>${data.consents.terms}</b><br/>
-             Datos personales: <b>${data.consents.personalDataProcessing}</b><br/>
-             Marketing: <b>${data.consents.marketing}</b><br/>
-             Fecha: <code>${data.timestamp}</code>
-           </span>`
+        setStatus(
+          "✅ Consentimiento guardado.\n" +
+          "Email: " + email + "\n" +
+          "Fecha: " + payload.timestamp + "\n\n" +
+          "Se intentó enviar setConsent() a Transcend (revisa consola/Transcend dashboard).",
+          "ok"
         );
       });
 
-      document.getElementById("clearBtn").addEventListener("click", () => {
-        clearConsent();
-        showStatus("", "🗑️ Consentimiento borrado (localStorage).");
+      viewBtn.addEventListener("click", () => {
+        const data = loadConsent();
+        if (!data) {
+          setStatus("No hay consentimiento guardado aún.", "");
+          return;
+        }
+        setStatus("📦 demo_consent:\n" + JSON.stringify(data, null, 2), "ok");
       });
 
-      // Autocargar si ya existe
-      const existing = getConsent();
-      if (existing) {
-        document.getElementById("name").value = existing.name || "";
-        document.getElementById("email").value = existing.email || "";
-        document.getElementById("terms").checked = !!existing.consents?.terms;
-        document.getElementById("dpConsent").checked = !!existing.consents?.personalDataProcessing;
-        document.getElementById("marketing").checked = !!existing.consents?.marketing;
-      }
+      clearBtn.addEventListener("click", () => {
+        clearConsent();
+
+        // Opcional: también “resetear” en Transcend (depende de tu config)
+        try {
+          if (window.transcend && window.transcend.consent && typeof window.transcend.consent.setConsent === "function") {
+            window.transcend.consent.setConsent({
+              Advertising: false,
+              Analytics: false,
+              Functional: true,
+              SaleOfInfo: false,
+              Essential: true
+            });
+          }
+        } catch (err) {
+          console.warn("Transcend reset error:", err);
+        }
+
+        setStatus("🗑️ Consentimiento borrado (localStorage) y se intentó resetear en Transcend.", "");
+      });
     </script>
   </body>
 </html>
