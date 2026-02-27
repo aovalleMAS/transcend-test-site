@@ -155,6 +155,17 @@
     </style>
   </head>
 
+<script>
+  function fireTestAnalytics() {
+    fetch("https://www.google-analytics.com/g/collect?v=2")
+      .then(() => console.log("Analytics request sent"))
+      .catch((e) => console.log("Blocked or failed:", e));
+  }
+
+  // dispara después de 3 segundos
+  setTimeout(fireTestAnalytics, 3000);
+</script>
+  
   <body>
     <div class="wrap">
       <div class="grid">
