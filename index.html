@@ -1,768 +1,184 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Kónico — Tecnología para tu vida</title>
-<!-- Transcend Consent Manager (Airgap) -->
-<script
-data-cfasync="false"
-src="https://transcend-cdn.com/cm/7fe0784a-dcb5-4fee-8517-4c00684b5d98/airgap.js"
-></script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script data-cfasync="false" src="https://transcend-cdn.com/cm/7fe0784a-dcb5-4fee-8517-4c00684b5d98/airgap.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
---ink: #0f0f0f;
---ink-soft: #4a4a4a;
---ink-muted: #888;
---paper: #f7f6f3;
---white: #ffffff;
---lime: #c8f04a;
---lime-dark: #a8cc30;
---coral: #ff5a3c;
---border: #e2e0da;
---card-bg: #ffffff;
---radius: 12px;
---radius-sm: 6px;
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-font-family: 'DM Sans', sans-serif;
-background: var(--paper);
-color: var(--ink);
-line-height: 1.6;
--webkit-font-smoothing: antialiased;
-}
-
-/* NAV */
-nav {
-position: sticky;
-top: 0;
-z-index: 100;
-background: rgba(247,246,243,0.92);
-backdrop-filter: blur(12px);
-border-bottom: 1px solid var(--border);
-padding: 0 5vw;
-height: 64px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-}
-
-.logo {
-font-family: 'Space Grotesk', sans-serif;
-font-size: 1.5rem;
-font-weight: 700;
-color: var(--ink);
-text-decoration: none;
-display: flex;
-align-items: center;
-gap: 8px;
-}
-.logo-dot {
-display: inline-block;
-width: 10px; height: 10px;
-background: var(--lime);
-border-radius: 50%;
-}
-
-.nav-links {
-display: flex;
-gap: 2rem;
-list-style: none;
-align-items: center;
-}
-.nav-links a {
-text-decoration: none;
-color: var(--ink-soft);
-font-size: 0.9rem;
-font-weight: 500;
-transition: color 0.2s;
-}
-.nav-links a:hover { color: var(--ink); }
-
-.btn {
-display: inline-flex;
-align-items: center;
-gap: 6px;
-padding: 10px 22px;
-border-radius: 50px;
-font-family: 'DM Sans', sans-serif;
-font-size: 0.9rem;
-font-weight: 600;
-text-decoration: none;
-cursor: pointer;
-border: none;
-transition: all 0.2s ease;
-}
-.btn-primary {
-background: var(--ink);
-color: var(--lime);
-}
-.btn-primary:hover {
-background: #2a2a2a;
-transform: translateY(-1px);
-}
-.btn-outline {
-background: transparent;
-color: var(--ink);
-border: 1.5px solid var(--ink);
-}
-.btn-outline:hover {
-background: var(--ink);
-color: var(--paper);
-}
-.btn-lime {
-background: var(--lime);
-color: var(--ink);
-}
-.btn-lime:hover {
-background: var(--lime-dark);
-transform: translateY(-1px);
-}
-
-/* HERO */
-.hero {
-padding: 80px 5vw 60px;
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 60px;
-align-items: center;
-min-height: 85vh;
-}
-
-.hero-eyebrow {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-font-size: 0.78rem;
-font-weight: 600;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-color: var(--ink-soft);
-background: var(--white);
-border: 1px solid var(--border);
-padding: 6px 14px;
-border-radius: 50px;
-margin-bottom: 24px;
-}
-.eyebrow-dot {
-width: 6px; height: 6px;
-background: var(--lime);
-border-radius: 50%;
-display: inline-block;
-}
-
-.hero h1 {
-font-family: 'Space Grotesk', sans-serif;
-font-size: clamp(2.8rem, 5vw, 4.2rem);
-font-weight: 700;
-line-height: 1.1;
-letter-spacing: -0.03em;
-margin-bottom: 24px;
-}
-
-.hero h1 em {
-font-style: normal;
-position: relative;
-display: inline-block;
-}
-.hero h1 em::after {
-content: '';
-position: absolute;
-bottom: 4px;
-left: 0;
-width: 100%;
-height: 4px;
-background: var(--lime);
-border-radius: 2px;
-}
-
-.hero-desc {
-font-size: 1.1rem;
-color: var(--ink-soft);
-max-width: 440px;
-margin-bottom: 36px;
-line-height: 1.7;
-}
-
-.hero-ctas {
-display: flex;
-gap: 12px;
-flex-wrap: wrap;
-}
-
-.hero-visual {
-position: relative;
-}
-
-.product-card-stack {
-position: relative;
-height: 420px;
-}
-
-.pcard {
-position: absolute;
-background: var(--white);
-border-radius: 20px;
-padding: 24px;
-border: 1px solid var(--border);
-box-shadow: 0 8px 40px rgba(0,0,0,0.08);
-}
-.pcard-main {
-width: 280px;
-right: 0; top: 30px;
-}
-.pcard-badge {
-background: var(--lime);
-color: var(--ink);
-font-size: 0.72rem;
-font-weight: 700;
-text-transform: uppercase;
-letter-spacing: 0.06em;
-padding: 4px 10px;
-border-radius: 50px;
-display: inline-block;
-margin-bottom: 16px;
-}
-.pcard-icon {
-font-size: 3.5rem;
-margin-bottom: 12px;
-display: block;
-}
-.pcard h3 {
-font-family: 'Space Grotesk', sans-serif;
-font-size: 1.05rem;
-font-weight: 600;
-margin-bottom: 4px;
-}
-.pcard .price {
-font-family: 'Space Grotesk', sans-serif;
-font-size: 1.4rem;
-font-weight: 700;
-}
-.pcard .price span {
-font-size: 0.85rem;
-font-weight: 400;
-color: var(--ink-muted);
-}
-
-.pcard-secondary {
-width: 220px;
-left: 0;
-top: 160px;
-}
-
-.pcard-stats {
-width: 200px;
-left: 20px;
-bottom: 0;
-background: var(--ink);
-color: var(--white);
-border-color: transparent;
-}
-.pcard-stats .stat-label {
-font-size: 0.75rem;
-color: rgba(255,255,255,0.5);
-text-transform: uppercase;
-letter-spacing: 0.1em;
-}
-.pcard-stats .stat-val {
-font-family: 'Space Grotesk', sans-serif;
-font-size: 1.8rem;
-font-weight: 700;
-color: var(--lime);
-}
-
-/* TRUST BAR */
-.trust-bar {
-border-top: 1px solid var(--border);
-border-bottom: 1px solid var(--border);
-padding: 16px 5vw;
-display: flex;
-gap: 40px;
-align-items: center;
-overflow-x: auto;
-}
-.trust-item {
-display: flex;
-align-items: center;
-gap: 8px;
-white-space: nowrap;
-font-size: 0.85rem;
-color: var(--ink-soft);
-font-weight: 500;
-}
-.trust-item svg { flex-shrink: 0; }
-
-/* PRODUCTS */
-.section {
-padding: 80px 5vw;
-}
-.section-header {
-display: flex;
-justify-content: space-between;
-align-items: flex-end;
-margin-bottom: 40px;
-}
-.section-title {
-font-family: 'Space Grotesk', sans-serif;
-font-size: clamp(1.6rem, 2.5vw, 2rem);
-font-weight: 700;
-letter-spacing: -0.02em;
-}
-
-.products-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-gap: 20px;
-}
-
-.product {
-background: var(--white);
-border-radius: var(--radius);
-border: 1px solid var(--border);
-overflow: hidden;
-transition: transform 0.2s, box-shadow 0.2s;
-cursor: pointer;
-}
-.product:hover {
-transform: translateY(-4px);
-box-shadow: 0 12px 40px rgba(0,0,0,0.1);
-}
-.product-img {
-height: 180px;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 3.5rem;
-background: var(--paper);
-}
-.product-info {
-padding: 16px;
-}
-.product-cat {
-font-size: 0.72rem;
-font-weight: 600;
-text-transform: uppercase;
-letter-spacing: 0.1em;
-color: var(--ink-muted);
-margin-bottom: 4px;
-}
-.product-name {
-font-family: 'Space Grotesk', sans-serif;
-font-weight: 600;
-font-size: 0.95rem;
-margin-bottom: 10px;
-}
-.product-price {
-font-family: 'Space Grotesk', sans-serif;
-font-size: 1.1rem;
-font-weight: 700;
-}
-.product-tag {
-display: inline-block;
-font-size: 0.7rem;
-padding: 2px 8px;
-border-radius: 50px;
-font-weight: 600;
-margin-left: 8px;
-}
-.tag-new { background: var(--lime); color: var(--ink); }
-.tag-sale { background: var(--coral); color: white; }
-
-/* PRIVACY SECTION */
-.privacy-section {
-background: var(--ink);
-color: var(--white);
-padding: 80px 5vw;
-border-radius: 24px;
-margin: 0 3vw 60px;
-}
-
-.privacy-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 60px;
-align-items: start;
-}
-
-.privacy-eyebrow {
-font-size: 0.75rem;
-font-weight: 600;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-color: var(--lime);
-margin-bottom: 16px;
-}
-
-.privacy-title {
-font-family: 'Space Grotesk', sans-serif;
-font-size: clamp(1.8rem, 3vw, 2.6rem);
-font-weight: 700;
-letter-spacing: -0.02em;
-line-height: 1.2;
-margin-bottom: 20px;
-}
-
-.privacy-desc {
-color: rgba(255,255,255,0.65);
-line-height: 1.7;
-margin-bottom: 32px;
-font-size: 1rem;
-}
-
-.law-badge {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-background: rgba(255,255,255,0.08);
-border: 1px solid rgba(255,255,255,0.15);
-border-radius: 50px;
-padding: 8px 16px;
-font-size: 0.82rem;
-font-weight: 500;
-color: rgba(255,255,255,0.8);
-margin-bottom: 32px;
-}
-
-.rights-list {
-list-style: none;
-display: flex;
-flex-direction: column;
-gap: 16px;
-}
-
-.right-item {
-display: flex;
-gap: 14px;
-align-items: flex-start;
-}
-
-.right-icon {
-width: 36px;
-height: 36px;
-background: rgba(200,240,74,0.12);
-border: 1px solid rgba(200,240,74,0.25);
-border-radius: 8px;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 1rem;
-flex-shrink: 0;
-}
-
-.right-content h4 {
-font-family: 'Space Grotesk', sans-serif;
-font-size: 0.95rem;
-font-weight: 600;
-margin-bottom: 2px;
-}
-
-.right-content p {
-font-size: 0.83rem;
-color: rgba(255,255,255,0.5);
-line-height: 1.5;
-}
-
-/* DSR CTA CARD */
-.dsr-cta-card {
-background: rgba(255,255,255,0.05);
-border: 1px solid rgba(255,255,255,0.12);
-border-radius: var(--radius);
-padding: 32px;
-}
-
-.dsr-cta-card h3 {
-font-family: 'Space Grotesk', sans-serif;
-font-size: 1.3rem;
-font-weight: 700;
-margin-bottom: 12px;
-}
-
-.dsr-cta-card p {
-color: rgba(255,255,255,0.6);
-font-size: 0.9rem;
-line-height: 1.6;
-margin-bottom: 24px;
-}
-
-.dsr-types {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 8px;
-margin-bottom: 28px;
-}
-
-.dsr-type {
-background: rgba(255,255,255,0.06);
-border: 1px solid rgba(255,255,255,0.1);
-border-radius: var(--radius-sm);
-padding: 10px 14px;
-font-size: 0.82rem;
-display: flex;
-align-items: center;
-gap: 8px;
-color: rgba(255,255,255,0.75);
-}
-
-.dsr-type-dot {
-width: 6px; height: 6px;
-background: var(--lime);
-border-radius: 50%;
-flex-shrink: 0;
-}
-
-.btn-dsr {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-background: var(--lime);
-color: var(--ink);
-padding: 14px 28px;
-border-radius: 50px;
-font-family: 'DM Sans', sans-serif;
-font-size: 0.95rem;
-font-weight: 700;
-text-decoration: none;
-border: none;
-cursor: pointer;
-width: 100%;
-justify-content: center;
-transition: all 0.2s;
-}
-.btn-dsr:hover {
-background: var(--lime-dark);
-transform: translateY(-1px);
-}
-
-.btn-dsr-outline {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-background: transparent;
-color: rgba(255,255,255,0.7);
-padding: 12px 28px;
-border-radius: 50px;
-font-family: 'DM Sans', sans-serif;
-font-size: 0.88rem;
-font-weight: 500;
-text-decoration: none;
-border: 1px solid rgba(255,255,255,0.2);
-cursor: pointer;
-width: 100%;
-justify-content: center;
-margin-top: 10px;
-transition: all 0.2s;
-}
-.btn-dsr-outline:hover {
-border-color: rgba(255,255,255,0.4);
-color: var(--white);
-}
-
-/* FOOTER */
-footer {
-padding: 48px 5vw 32px;
-border-top: 1px solid var(--border);
-}
-.footer-grid {
-display: grid;
-grid-template-columns: 2fr 1fr 1fr 1fr;
-gap: 40px;
-margin-bottom: 40px;
-}
-.footer-brand p {
-font-size: 0.88rem;
-color: var(--ink-soft);
-margin-top: 12px;
-line-height: 1.6;
-max-width: 240px;
-}
-.footer-col h4 {
-font-family: 'Space Grotesk', sans-serif;
-font-size: 0.82rem;
-font-weight: 600;
-text-transform: uppercase;
-letter-spacing: 0.08em;
-color: var(--ink-muted);
-margin-bottom: 14px;
-}
-.footer-col ul { list-style: none; }
-.footer-col li { margin-bottom: 8px; }
-.footer-col a {
-text-decoration: none;
-color: var(--ink-soft);
-font-size: 0.88rem;
-transition: color 0.2s;
-}
-.footer-col a:hover { color: var(--ink); }
-.footer-bottom {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding-top: 24px;
-border-top: 1px solid var(--border);
-font-size: 0.8rem;
-color: var(--ink-muted);
-}
-
-/* RESPONSIVE */
-@media (max-width: 900px) {
-.hero { grid-template-columns: 1fr; min-height: auto; padding-top: 40px; }
-.hero-visual { display: none; }
-.privacy-grid { grid-template-columns: 1fr; }
-.footer-grid { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 600px) {
-.nav-links { display: none; }
-.footer-grid { grid-template-columns: 1fr; }
-.dsr-types { grid-template-columns: 1fr; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-* { animation: none !important; transition: none !important; }
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#0f0f0f;--ink-soft:#4a4a4a;--ink-muted:#888;--paper:#f7f6f3;--white:#fff;--lime:#c8f04a;--lime-dark:#a8cc30;--coral:#ff5a3c;--border:#e2e0da;--radius:12px;--radius-sm:6px}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+nav{position:sticky;top:0;z-index:100;background:rgba(247,246,243,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 5vw;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo-dot{display:inline-block;width:10px;height:10px;background:var(--lime);border-radius:50%}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center}
+.nav-links a{text-decoration:none;color:var(--ink-soft);font-size:.9rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;cursor:pointer;border:none;transition:all .2s ease}
+.btn-primary{background:var(--ink);color:var(--lime)}.btn-primary:hover{background:#2a2a2a;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}.btn-outline:hover{background:var(--ink);color:var(--paper)}
+#nav-user-area{display:flex;align-items:center;gap:10px}
+.user-chip{background:var(--lime);color:var(--ink);padding:6px 16px;border-radius:50px;font-size:.85rem;font-weight:700;display:none;align-items:center;gap:6px}
+.hero{padding:80px 5vw 60px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;min-height:85vh}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);background:var(--white);border:1px solid var(--border);padding:6px 14px;border-radius:50px;margin-bottom:24px}
+.eyebrow-dot{width:6px;height:6px;background:var(--lime);border-radius:50%;display:inline-block}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.8rem,5vw,4.2rem);font-weight:700;line-height:1.1;letter-spacing:-.03em;margin-bottom:24px}
+.hero h1 em{font-style:normal;position:relative;display:inline-block}
+.hero h1 em::after{content:'';position:absolute;bottom:4px;left:0;width:100%;height:4px;background:var(--lime);border-radius:2px}
+.hero-desc{font-size:1.1rem;color:var(--ink-soft);max-width:440px;margin-bottom:36px;line-height:1.7}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero-visual{position:relative}
+.product-card-stack{position:relative;height:420px}
+.pcard{position:absolute;background:var(--white);border-radius:20px;padding:24px;border:1px solid var(--border);box-shadow:0 8px 40px rgba(0,0,0,.08)}
+.pcard-main{width:280px;right:0;top:30px}.pcard-secondary{width:220px;left:0;top:160px}
+.pcard-stats{width:200px;left:20px;bottom:0;background:var(--ink);color:var(--white);border-color:transparent}
+.pcard-badge{background:var(--lime);color:var(--ink);font-size:.72rem;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:50px;display:inline-block;margin-bottom:16px}
+.pcard-icon{font-size:3.5rem;margin-bottom:12px;display:block}
+.pcard h3{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:600;margin-bottom:4px}
+.pcard .price{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700}
+.pcard .price span{font-size:.85rem;font-weight:400;color:var(--ink-muted)}
+.stat-label{font-size:.75rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em}
+.stat-val{font-family:'Space Grotesk',sans-serif;font-size:1.8rem;font-weight:700;color:var(--lime)}
+.trust-bar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 5vw;display:flex;gap:40px;align-items:center;overflow-x:auto}
+.trust-item{display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:.85rem;color:var(--ink-soft);font-weight:500}
+.section{padding:80px 5vw}
+.section-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.6rem,2.5vw,2rem);font-weight:700;letter-spacing:-.02em}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
+.product{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;transition:transform .2s,box-shadow .2s}
+.product:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.1)}
+.product-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;background:var(--paper)}
+.product-info{padding:16px}
+.product-cat{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-muted);margin-bottom:4px}
+.product-name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.95rem;margin-bottom:10px}
+.product-price{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700}
+.product-tag{display:inline-block;font-size:.7rem;padding:2px 8px;border-radius:50px;font-weight:600;margin-left:8px}
+.tag-new{background:var(--lime);color:var(--ink)}.tag-sale{background:var(--coral);color:#fff}
+.buy-btn{display:block;width:100%;margin-top:12px;padding:10px;background:var(--ink);color:var(--lime);border:none;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:background .2s}
+.buy-btn:hover{background:#2a2a2a}
+.privacy-section{background:var(--ink);color:var(--white);padding:80px 5vw;border-radius:24px;margin:0 3vw 60px}
+.privacy-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.privacy-eyebrow{font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--lime);margin-bottom:16px}
+.privacy-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:20px}
+.privacy-desc{color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:32px}
+.law-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:50px;padding:8px 16px;font-size:.82rem;font-weight:500;color:rgba(255,255,255,.8);margin-bottom:32px}
+.rights-list{list-style:none;display:flex;flex-direction:column;gap:16px}
+.right-item{display:flex;gap:14px;align-items:flex-start}
+.right-icon{width:36px;height:36px;background:rgba(200,240,74,.12);border:1px solid rgba(200,240,74,.25);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.right-content h4{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:600;margin-bottom:2px}
+.right-content p{font-size:.83rem;color:rgba(255,255,255,.5);line-height:1.5}
+.dsr-cta-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);padding:32px}
+.dsr-cta-card h3{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:12px}
+.dsr-cta-card p{color:rgba(255,255,255,.6);font-size:.9rem;line-height:1.6;margin-bottom:24px}
+.dsr-types{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:28px}
+.dsr-type{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-sm);padding:10px 14px;font-size:.82rem;display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.75)}
+.dsr-type-dot{width:6px;height:6px;background:var(--lime);border-radius:50%;flex-shrink:0}
+.btn-dsr{display:inline-flex;align-items:center;gap:8px;background:var(--lime);color:var(--ink);padding:14px 28px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;text-decoration:none;border:none;cursor:pointer;width:100%;justify-content:center;transition:all .2s}
+.btn-dsr:hover{background:var(--lime-dark);transform:translateY(-1px)}
+footer{padding:48px 5vw 32px;border-top:1px solid var(--border)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{font-size:.88rem;color:var(--ink-soft);margin-top:12px;line-height:1.6;max-width:240px}
+.footer-col h4{font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-muted);margin-bottom:14px}
+.footer-col ul{list-style:none}.footer-col li{margin-bottom:8px}
+.footer-col a{text-decoration:none;color:var(--ink-soft);font-size:.88rem;transition:color .2s}.footer-col a:hover{color:var(--ink)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid var(--border);font-size:.8rem;color:var(--ink-muted)}
+/* MODALES */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.active{display:flex}
+.modal{background:var(--white);border-radius:20px;width:100%;max-width:500px;padding:36px;position:relative;box-shadow:0 24px 80px rgba(0,0,0,.2);animation:modalIn .25s ease;max-height:92vh;overflow-y:auto}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--paper);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--ink-soft)}
+.modal-icon{width:52px;height:52px;background:var(--lime);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:18px}
+.modal h2{font-family:'Space Grotesk',sans-serif;font-size:1.35rem;font-weight:700;margin-bottom:4px}
+.subtitle{color:var(--ink-soft);font-size:.87rem;margin-bottom:22px}
+.modal-tabs{display:flex;gap:0;margin-bottom:22px;border:1.5px solid var(--border);border-radius:50px;padding:3px}
+.modal-tab{flex:1;padding:8px;border:none;background:transparent;border-radius:50px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;color:var(--ink-soft);transition:all .2s}
+.modal-tab.active{background:var(--ink);color:var(--lime)}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:.82rem;font-weight:600;margin-bottom:5px;color:var(--ink)}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);background:var(--white);transition:border-color .2s}
+.form-input:focus{outline:none;border-color:var(--ink)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+.form-section-label{font-size:.78rem;font-weight:600;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.btn-submit{width:100%;padding:13px;background:var(--ink);color:var(--lime);border:none;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;margin-top:6px}
+.btn-submit:hover{background:#2a2a2a}.btn-submit:disabled{opacity:.6;cursor:not-allowed}
+.modal-msg{padding:11px 14px;border-radius:var(--radius-sm);font-size:.84rem;margin-bottom:14px;display:none}
+.modal-msg.success{background:#d4f5c4;color:#1a6b00;border:1px solid #a8e090}
+.modal-msg.error{background:#ffe5e5;color:#c00;border:1px solid #ffb3b3}
+.purchase-item{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.purchase-item-info h4{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:600}
+.purchase-item-info p{font-size:.78rem;color:var(--ink-muted);margin-top:2px}
+.purchase-item-price{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.05rem;white-space:nowrap}
+.success-screen{text-align:center;padding:16px 0;display:none}
+.success-screen .big-icon{font-size:3rem;margin-bottom:14px}
+.success-screen h3{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:8px}
+.success-screen p{color:var(--ink-soft);font-size:.9rem;line-height:1.6}
+.ref-badge{display:inline-block;background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 14px;font-family:monospace;font-size:.85rem;margin-top:10px;color:var(--ink-soft)}
+@media(max-width:900px){.hero{grid-template-columns:1fr;min-height:auto;padding-top:40px}.hero-visual{display:none}.privacy-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.nav-links{display:none}.footer-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="logo">
-    Kónico <span class="logo-dot"></span>
-  </a>
+  <a href="#" class="logo">Kónico <span class="logo-dot"></span></a>
   <ul class="nav-links">
     <li><a href="#productos">Productos</a></li>
     <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener">Privacidad</a></li>
     <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener">Mis derechos</a></li>
   </ul>
-  <a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener" class="btn btn-primary">
-    Ejercer mis derechos →
-  </a>
+  <div id="nav-user-area">
+    <span class="user-chip" id="user-chip">👤 <span id="user-chip-name"></span></span>
+    <button class="btn btn-outline" id="btn-login" onclick="openAuth('login')">Iniciar sesión</button>
+    <button class="btn btn-primary" id="btn-register" onclick="openAuth('register')">Crear cuenta</button>
+    <button class="btn btn-outline" id="btn-logout" style="display:none" onclick="logout()">Salir</button>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-eyebrow">
-      <span class="eyebrow-dot"></span>
-      Nueva temporada — Hasta 40% de descuento
-    </div>
+    <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Nueva temporada — Hasta 40% de descuento</div>
     <h1>Tecnología que <em>suma</em> a tu vida</h1>
-    <p class="hero-desc">
-      Computadores, audio, smartphones y accesorios con envío en 24 horas a todo Chile. Calidad verificada, precios directos.
-    </p>
+    <p class="hero-desc">Computadores, audio, smartphones y accesorios con envío en 24 horas a todo Chile. Calidad verificada, precios directos.</p>
     <div class="hero-ctas">
       <a href="#productos" class="btn btn-primary">Ver productos</a>
       <a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener" class="btn btn-outline">Tu privacidad</a>
     </div>
   </div>
-
   <div class="hero-visual">
     <div class="product-card-stack">
-      <div class="pcard pcard-secondary">
-        <span class="pcard-badge">Más vendido</span>
-        <span class="pcard-icon">🎧</span>
-        <h3>Audífonos Pro</h3>
-        <div class="price">$89.990 <span>CLP</span></div>
-      </div>
-      <div class="pcard pcard-main">
-        <span class="pcard-badge">Nuevo</span>
-        <span class="pcard-icon">💻</span>
-        <h3>Laptop UltraBook 14"</h3>
-        <div class="price">$649.990 <span>CLP</span></div>
-      </div>
-      <div class="pcard pcard-stats">
-        <div class="stat-label">Clientes satisfechos</div>
-        <div class="stat-val">12.4k</div>
-      </div>
+      <div class="pcard pcard-secondary"><span class="pcard-badge">Más vendido</span><span class="pcard-icon">🎧</span><h3>Audífonos Pro</h3><div class="price">$89.990 <span>CLP</span></div></div>
+      <div class="pcard pcard-main"><span class="pcard-badge">Nuevo</span><span class="pcard-icon">💻</span><h3>Laptop UltraBook 14"</h3><div class="price">$649.990 <span>CLP</span></div></div>
+      <div class="pcard pcard-stats"><div class="stat-label">Clientes satisfechos</div><div class="stat-val">12.4k</div></div>
     </div>
   </div>
 </section>
 
 <!-- TRUST BAR -->
 <div class="trust-bar">
-  <div class="trust-item">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L10 6H15L11 9.5L12.5 15L8 11.5L3.5 15L5 9.5L1 6H6L8 1Z" fill="#0f0f0f"/></svg>
-    Envío gratis sobre $40.000
-  </div>
-  <div class="trust-item">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1" stroke="#0f0f0f" stroke-width="1.5"/><path d="M5 4V3a3 3 0 016 0v1" stroke="#0f0f0f" stroke-width="1.5"/></svg>
-    Compra 100% segura
-  </div>
-  <div class="trust-item">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#0f0f0f" stroke-width="1.5"/><path d="M8 5v3.5L10 10" stroke="#0f0f0f" stroke-width="1.5" stroke-linecap="round"/></svg>
-    Despacho en 24–48 horas
-  </div>
-  <div class="trust-item">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="#0f0f0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Garantía de 12 meses
-  </div>
-  <div class="trust-item">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.8 3.6L14 6.3l-3 2.9.7 4.1L8 11.1 4.3 13.3l.7-4.1-3-2.9 4.2-.7L8 2z" stroke="#0f0f0f" stroke-width="1.4"/></svg>
-    Ley 21.719 — Datos protegidos
-  </div>
+  <div class="trust-item">⭐ Envío gratis sobre $40.000</div>
+  <div class="trust-item">🔒 Compra 100% segura</div>
+  <div class="trust-item">⏱️ Despacho en 24–48 horas</div>
+  <div class="trust-item">✅ Garantía de 12 meses</div>
+  <div class="trust-item">🇨🇱 Ley 21.719 — Datos protegidos</div>
 </div>
 
 <!-- PRODUCTOS -->
 <section class="section" id="productos">
-  <div class="section-header">
-    <h2 class="section-title">Productos destacados</h2>
-    <a href="#" class="btn btn-outline" style="font-size:0.85rem; padding:8px 18px;">Ver todos</a>
-  </div>
-  <div class="products-grid">
-    <div class="product">
-      <div class="product-img">💻</div>
-      <div class="product-info">
-        <div class="product-cat">Computadores</div>
-        <div class="product-name">UltraBook 14" Intel i7</div>
-        <div class="product-price">$649.990 <span class="product-tag tag-new">Nuevo</span></div>
-      </div>
-    </div>
-    <div class="product">
-      <div class="product-img">📱</div>
-      <div class="product-info">
-        <div class="product-cat">Smartphones</div>
-        <div class="product-name">SmartPhone X12 Pro</div>
-        <div class="product-price">$489.990 <span class="product-tag tag-sale">-20%</span></div>
-      </div>
-    </div>
-    <div class="product">
-      <div class="product-img">🎧</div>
-      <div class="product-info">
-        <div class="product-cat">Audio</div>
-        <div class="product-name">Audífonos Noise Cancelling</div>
-        <div class="product-price">$89.990</div>
-      </div>
-    </div>
-    <div class="product">
-      <div class="product-img">⌨️</div>
-      <div class="product-info">
-        <div class="product-cat">Accesorios</div>
-        <div class="product-name">Teclado Mecánico RGB</div>
-        <div class="product-price">$49.990 <span class="product-tag tag-sale">-15%</span></div>
-      </div>
-    </div>
-    <div class="product">
-      <div class="product-img">🖥️</div>
-      <div class="product-info">
-        <div class="product-cat">Monitores</div>
-        <div class="product-name">Monitor 27" 4K IPS</div>
-        <div class="product-price">$329.990 <span class="product-tag tag-new">Nuevo</span></div>
-      </div>
-    </div>
-    <div class="product">
-      <div class="product-img">📷</div>
-      <div class="product-info">
-        <div class="product-cat">Fotografía</div>
-        <div class="product-name">Cámara Mirrorless 24MP</div>
-        <div class="product-price">$799.990</div>
-      </div>
-    </div>
+  <div class="section-header"><h2 class="section-title">Productos destacados</h2></div>
+  <div class="products-grid" id="products-grid">
+    <div class="product"><div class="product-img">💻</div><div class="product-info"><div class="product-cat">Computadores</div><div class="product-name">UltraBook 14" Intel i7</div><div class="product-price">$649.990 <span class="product-tag tag-new">Nuevo</span></div><button class="buy-btn" onclick="initPurchase('UltraBook 14 Intel i7',64999000)">Comprar</button></div></div>
+    <div class="product"><div class="product-img">📱</div><div class="product-info"><div class="product-cat">Smartphones</div><div class="product-name">SmartPhone X12 Pro</div><div class="product-price">$489.990 <span class="product-tag tag-sale">-20%</span></div><button class="buy-btn" onclick="initPurchase('SmartPhone X12 Pro',48999000)">Comprar</button></div></div>
+    <div class="product"><div class="product-img">🎧</div><div class="product-info"><div class="product-cat">Audio</div><div class="product-name">Audífonos Noise Cancelling</div><div class="product-price">$89.990</div><button class="buy-btn" onclick="initPurchase('Audifonos Noise Cancelling',8999000)">Comprar</button></div></div>
+    <div class="product"><div class="product-img">⌨️</div><div class="product-info"><div class="product-cat">Accesorios</div><div class="product-name">Teclado Mecánico RGB</div><div class="product-price">$49.990 <span class="product-tag tag-sale">-15%</span></div><button class="buy-btn" onclick="initPurchase('Teclado Mecanico RGB',4999000)">Comprar</button></div></div>
+    <div class="product"><div class="product-img">🖥️</div><div class="product-info"><div class="product-cat">Monitores</div><div class="product-name">Monitor 27" 4K IPS</div><div class="product-price">$329.990 <span class="product-tag tag-new">Nuevo</span></div><button class="buy-btn" onclick="initPurchase('Monitor 27 4K IPS',32999000)">Comprar</button></div></div>
+    <div class="product"><div class="product-img">📷</div><div class="product-info"><div class="product-cat">Fotografía</div><div class="product-name">Cámara Mirrorless 24MP</div><div class="product-price">$799.990</div><button class="buy-btn" onclick="initPurchase('Camara Mirrorless 24MP',79999000)">Comprar</button></div></div>
   </div>
 </section>
 
@@ -773,64 +189,26 @@ color: var(--ink-muted);
       <div>
         <div class="privacy-eyebrow">Tu privacidad, nuestra prioridad</div>
         <h2 class="privacy-title">Tus datos están protegidos con la Ley 21.719</h2>
-        <p class="privacy-desc">
-          En Kónico tratamos tus datos personales con el más alto estándar de cumplimiento. Desde diciembre de 2026, Chile cuenta con una nueva ley de protección de datos que te da control total sobre tu información.
-        </p>
-        <div class="law-badge">
-          🇨🇱 &nbsp;Cumplimiento Ley 21.719 — vigente desde 1° dic. 2026
-        </div>
+        <p class="privacy-desc">En Kónico tratamos tus datos personales con el más alto estándar de cumplimiento.</p>
+        <div class="law-badge">🇨🇱 &nbsp;Ley 21.719 — vigente desde 1° dic. 2026</div>
         <ul class="rights-list">
-          <li class="right-item">
-            <div class="right-icon">👁️</div>
-            <div class="right-content">
-              <h4>Acceso</h4>
-              <p>Conoce exactamente qué datos tuyos tenemos y para qué los usamos.</p>
-            </div>
-          </li>
-          <li class="right-item">
-            <div class="right-icon">✏️</div>
-            <div class="right-content">
-              <h4>Rectificación</h4>
-              <p>Corrige cualquier información incorrecta o desactualizada en nuestros registros.</p>
-            </div>
-          </li>
-          <li class="right-item">
-            <div class="right-icon">🗑️</div>
-            <div class="right-content">
-              <h4>Supresión</h4>
-              <p>Solicita la eliminación de tus datos cuando ya no sean necesarios.</p>
-            </div>
-          </li>
-          <li class="right-item">
-            <div class="right-icon">📦</div>
-            <div class="right-content">
-              <h4>Portabilidad</h4>
-              <p>Recibe tus datos en formato estructurado para llevarlos a donde quieras.</p>
-            </div>
-          </li>
+          <li class="right-item"><div class="right-icon">👁️</div><div class="right-content"><h4>Acceso</h4><p>Conoce qué datos tuyos tenemos y para qué los usamos.</p></div></li>
+          <li class="right-item"><div class="right-icon">✏️</div><div class="right-content"><h4>Rectificación</h4><p>Corrige información incorrecta o desactualizada.</p></div></li>
+          <li class="right-item"><div class="right-icon">🗑️</div><div class="right-content"><h4>Supresión</h4><p>Solicita la eliminación de tus datos personales.</p></div></li>
+          <li class="right-item"><div class="right-icon">📦</div><div class="right-content"><h4>Portabilidad</h4><p>Recibe tus datos en formato estructurado.</p></div></li>
         </ul>
       </div>
-
       <div>
         <div class="dsr-cta-card">
           <h3>Ejercer mis derechos</h3>
-          <p>Usa nuestro portal seguro para enviar cualquier solicitud sobre tus datos. Respondemos en máximo 30 días según la Ley 21.719.</p>
-
+          <p>Usa nuestro portal seguro. Respondemos en máximo 30 días según la Ley 21.719.</p>
           <div class="dsr-types">
             <div class="dsr-type"><span class="dsr-type-dot"></span>Acceso a mis datos</div>
             <div class="dsr-type"><span class="dsr-type-dot"></span>Corrección de datos</div>
             <div class="dsr-type"><span class="dsr-type-dot"></span>Eliminar mis datos</div>
             <div class="dsr-type"><span class="dsr-type-dot"></span>Portabilidad</div>
-            <div class="dsr-type"><span class="dsr-type-dot"></span>Oposición</div>
-            <div class="dsr-type"><span class="dsr-type-dot"></span>Bloqueo temporal</div>
           </div>
-
-          <a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener" class="btn-dsr">
-            🔒 &nbsp;Ir al portal de privacidad
-          </a>
-          <a href="mailto:privacidad@konico.cl" class="btn-dsr-outline">
-            Escribir a privacidad@konico.cl
-          </a>
+          <a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener" class="btn-dsr">🔒 &nbsp;Ir al portal de privacidad</a>
         </div>
       </div>
     </div>
@@ -840,48 +218,241 @@ color: var(--ink-muted);
 <!-- FOOTER -->
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand">
-      <a href="#" class="logo">Kónico <span class="logo-dot"></span></a>
-      <p>Tecnología para tu vida. Tienda online de electrónica y accesorios con envío a todo Chile.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Tienda</h4>
-      <ul>
-        <li><a href="#">Computadores</a></li>
-        <li><a href="#">Smartphones</a></li>
-        <li><a href="#">Audio</a></li>
-        <li><a href="#">Accesorios</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Ayuda</h4>
-      <ul>
-        <li><a href="#">Mi cuenta</a></li>
-        <li><a href="#">Seguir pedido</a></li>
-        <li><a href="#">Devoluciones</a></li>
-        <li><a href="#">Contacto</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Privacidad</h4>
-      <ul>
-        <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener">Mis derechos</a></li>
-        <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener">Portal DSR</a></li>
-        <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener">Política de datos</a></li>
-        <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener">Ley 21.719</a></li>
-      </ul>
-    </div>
+    <div class="footer-brand"><a href="#" class="logo">Kónico <span class="logo-dot"></span></a><p>Tecnología para tu vida. Envío a todo Chile.</p></div>
+    <div class="footer-col"><h4>Tienda</h4><ul><li><a href="#">Computadores</a></li><li><a href="#">Smartphones</a></li><li><a href="#">Audio</a></li></ul></div>
+    <div class="footer-col"><h4>Ayuda</h4><ul><li><a href="#">Mi cuenta</a></li><li><a href="#">Seguir pedido</a></li><li><a href="#">Contacto</a></li></ul></div>
+    <div class="footer-col"><h4>Privacidad</h4><ul>
+      <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank">Mis derechos</a></li>
+      <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank">Portal DSR</a></li>
+      <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank">Ley 21.719</a></li>
+    </ul></div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Kónico SpA — RUT 99.999.999-9 — Santiago, Chile</span>
-    <span>Responsable de datos: privacidad@konico.cl · <a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener" style="color:inherit">Ley 21.719</a></span>
+    <span>© 2026 Kónico SpA — Santiago, Chile</span>
+    <span>privacidad@konico.cl · <a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" style="color:inherit">Ley 21.719</a></span>
   </div>
 </footer>
 
-<script>
-// Todos los links de privacidad ya apuntan directamente al Privacy Center.
-// Este script queda limpio — sin modal de placeholder.
-</script>
+<!-- ══ MODAL AUTH ══ -->
+<div class="modal-overlay" id="authModal" onclick="closeOnBg(event,'authModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('authModal')">✕</button>
+    <div class="modal-icon">👤</div>
+    <h2 id="auth-title">Bienvenido a Kónico</h2>
+    <p class="subtitle">Crea tu cuenta o inicia sesión para comprar</p>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tab-register" onclick="switchTab('register')">Crear cuenta</button>
+      <button class="modal-tab" id="tab-login" onclick="switchTab('login')">Iniciar sesión</button>
+    </div>
+    <div id="auth-msg" class="modal-msg"></div>
 
+    <!-- REGISTRO -->
+    <div id="form-register">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Nombre *</label><input class="form-input" id="r-first_name" placeholder="Juan"/></div>
+        <div class="form-group"><label class="form-label">Apellido *</label><input class="form-input" id="r-last_name" placeholder="Pérez"/></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email *</label><input class="form-input" id="r-email" type="email" placeholder="juan@email.com"/></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Teléfono</label><input class="form-input" id="r-phone" placeholder="+56 9 1234 5678"/></div>
+        <div class="form-group"><label class="form-label">Fecha de nacimiento</label><input class="form-input" id="r-dob" type="date"/></div>
+      </div>
+      <hr class="form-divider"/>
+      <div class="form-section-label">📍 Dirección de despacho</div>
+      <div class="form-group"><label class="form-label">Calle y número *</label><input class="form-input" id="r-line1" placeholder="Av. Providencia 1234"/></div>
+      <div class="form-group"><label class="form-label">Depto / Piso</label><input class="form-input" id="r-line2" placeholder="Depto 301"/></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Ciudad *</label><input class="form-input" id="r-city" placeholder="Santiago"/></div>
+        <div class="form-group"><label class="form-label">Región</label><input class="form-input" id="r-state_region" placeholder="Metropolitana"/></div>
+      </div>
+      <div class="form-group"><label class="form-label">Código postal</label><input class="form-input" id="r-postal_code" placeholder="7500000"/></div>
+      <button class="btn-submit" id="btn-do-register" onclick="submitRegister()">Crear cuenta →</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="form-login" style="display:none">
+      <div class="form-group"><label class="form-label">Email *</label><input class="form-input" id="l-email" type="email" placeholder="juan@email.com"/></div>
+      <button class="btn-submit" id="btn-do-login" onclick="submitLogin()">Entrar →</button>
+      <p style="font-size:.78rem;color:var(--ink-muted);margin-top:10px;text-align:center">Para la demo solo necesitas tu email registrado</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL COMPRA ══ -->
+<div class="modal-overlay" id="purchaseModal" onclick="closeOnBg(event,'purchaseModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('purchaseModal')">✕</button>
+
+    <div id="purchase-screen">
+      <div class="modal-icon">🛒</div>
+      <h2>Confirmar compra</h2>
+      <p class="subtitle">Revisa tu pedido antes de confirmar</p>
+      <div id="purchase-msg" class="modal-msg"></div>
+      <div class="purchase-item">
+        <div class="purchase-item-info">
+          <h4 id="p-name">—</h4>
+          <p>Envío 24–48 hrs · Garantía 12 meses</p>
+        </div>
+        <div class="purchase-item-price" id="p-price">—</div>
+      </div>
+      <div class="purchase-item" style="background:var(--ink);color:#fff;border-color:transparent">
+        <div class="purchase-item-info">
+          <h4>Cuenta</h4>
+          <p id="p-email" style="color:rgba(255,255,255,.6)">—</p>
+        </div>
+        <div style="color:var(--lime);font-weight:700;font-size:.85rem">✓ Verificado</div>
+      </div>
+      <button class="btn-submit" id="btn-confirm" onclick="confirmPurchase()">✅ Confirmar y pagar →</button>
+    </div>
+
+    <div class="success-screen" id="purchase-success">
+      <div class="big-icon">🎉</div>
+      <h3>¡Compra realizada!</h3>
+      <p>Tu pedido quedó registrado en nuestro sistema.<br/>Recibirás confirmación por email pronto.</p>
+      <div class="ref-badge" id="p-ref"></div>
+      <button class="btn-submit" style="margin-top:20px" onclick="closeModal('purchaseModal')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG — actualiza esta URL después del deploy en Vercel ──────────────
+const API = 'https://konico-api.vercel.app/api';
+
+// ── ESTADO ───────────────────────────────────────────────────────────────
+let currentUser = JSON.parse(localStorage.getItem('konico_user') || 'null');
+let pendingPurchase = null;
+
+updateNavUser();
+
+function updateNavUser() {
+  const chip = document.getElementById('user-chip');
+  const chipName = document.getElementById('user-chip-name');
+  const btnL = document.getElementById('btn-login');
+  const btnR = document.getElementById('btn-register');
+  const btnO = document.getElementById('btn-logout');
+  if (currentUser) {
+    chip.style.display = 'flex'; chipName.textContent = currentUser.name.split(' ')[0];
+    btnL.style.display = 'none'; btnR.style.display = 'none'; btnO.style.display = 'flex';
+  } else {
+    chip.style.display = 'none'; btnL.style.display = 'flex'; btnR.style.display = 'flex'; btnO.style.display = 'none';
+  }
+}
+
+function logout() { currentUser = null; localStorage.removeItem('konico_user'); updateNavUser(); }
+
+// ── MODALES ──────────────────────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow='hidden'; }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow=''; }
+function closeOnBg(e,id) { if(e.target===document.getElementById(id)) closeModal(id); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){closeModal('authModal');closeModal('purchaseModal');}});
+
+function openAuth(tab) { switchTab(tab); openModal('authModal'); }
+
+function switchTab(tab) {
+  document.getElementById('form-register').style.display = tab==='register'?'block':'none';
+  document.getElementById('form-login').style.display    = tab==='login'?'block':'none';
+  document.getElementById('tab-register').classList.toggle('active', tab==='register');
+  document.getElementById('tab-login').classList.toggle('active',    tab==='login');
+  showMsg('auth-msg','','');
+}
+
+function showMsg(id,text,type) {
+  const el=document.getElementById(id);
+  el.textContent=text; el.className='modal-msg'+(type?' '+type:''); el.style.display=text?'block':'none';
+}
+
+// ── REGISTRO ─────────────────────────────────────────────────────────────
+async function submitRegister() {
+  const first_name   = document.getElementById('r-first_name').value.trim();
+  const last_name    = document.getElementById('r-last_name').value.trim();
+  const email        = document.getElementById('r-email').value.trim();
+  const phone        = document.getElementById('r-phone').value.trim();
+  const date_of_birth= document.getElementById('r-dob').value;
+  const line1        = document.getElementById('r-line1').value.trim();
+  const line2        = document.getElementById('r-line2').value.trim();
+  const city         = document.getElementById('r-city').value.trim();
+  const state_region = document.getElementById('r-state_region').value.trim();
+  const postal_code  = document.getElementById('r-postal_code').value.trim();
+
+  if (!first_name||!last_name||!email) return showMsg('auth-msg','⚠️ Nombre, apellido y email son obligatorios.','error');
+  if (!line1||!city) return showMsg('auth-msg','⚠️ Ingresa al menos calle y ciudad.','error');
+
+  const btn=document.getElementById('btn-do-register');
+  btn.disabled=true; btn.textContent='Registrando...';
+  try {
+    const res = await fetch(`${API}/register`,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({first_name,last_name,email,phone,date_of_birth,line1,line2,city,state_region,postal_code})});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.error||'Error');
+    currentUser={userId:data.userId,name:`${first_name} ${last_name}`,email};
+    localStorage.setItem('konico_user',JSON.stringify(currentUser));
+    showMsg('auth-msg',`✅ ¡Bienvenido ${first_name}! Cuenta creada.`,'success');
+    updateNavUser();
+    setTimeout(()=>closeModal('authModal'),1600);
+  } catch(e) {
+    showMsg('auth-msg', e.message==='Email ya registrado'
+      ? '⚠️ Ese email ya está registrado. Inicia sesión.' : `❌ ${e.message}`, 'error');
+  } finally { btn.disabled=false; btn.textContent='Crear cuenta →'; }
+}
+
+// ── LOGIN ────────────────────────────────────────────────────────────────
+async function submitLogin() {
+  const email=document.getElementById('l-email').value.trim();
+  if(!email) return showMsg('auth-msg','⚠️ Ingresa tu email.','error');
+  const btn=document.getElementById('btn-do-login');
+  btn.disabled=true; btn.textContent='Buscando...';
+  try {
+    const res=await fetch(`${API}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.error);
+    currentUser={userId:data.userId,name:data.name,email};
+    localStorage.setItem('konico_user',JSON.stringify(currentUser));
+    showMsg('auth-msg',`✅ ¡Hola ${data.name.split(' ')[0]}!`,'success');
+    updateNavUser();
+    setTimeout(()=>closeModal('authModal'),1200);
+  } catch(e) { showMsg('auth-msg',`❌ ${e.message}`,'error'); }
+  finally { btn.disabled=false; btn.textContent='Entrar →'; }
+}
+
+// ── COMPRA ───────────────────────────────────────────────────────────────
+function initPurchase(description, amount_cents) {
+  if(!currentUser) {
+    pendingPurchase={description,amount_cents};
+    openAuth('login');
+    showMsg('auth-msg','⚠️ Inicia sesión para comprar.','error');
+    return;
+  }
+  pendingPurchase={description,amount_cents};
+  document.getElementById('p-name').textContent=description;
+  // amount_cents está en centavos → mostrar en pesos
+  const pesos=amount_cents/100;
+  document.getElementById('p-price').textContent='$'+pesos.toLocaleString('es-CL');
+  document.getElementById('p-email').textContent=currentUser.email;
+  document.getElementById('purchase-screen').style.display='block';
+  document.getElementById('purchase-success').style.display='none';
+  showMsg('purchase-msg','','');
+  openModal('purchaseModal');
+}
+
+async function confirmPurchase() {
+  if(!currentUser||!pendingPurchase) return;
+  const btn=document.getElementById('btn-confirm');
+  btn.disabled=true; btn.textContent='Procesando...';
+  try {
+    const res=await fetch(`${API}/purchase`,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({userId:currentUser.userId,description:pendingPurchase.description,amount_cents:pendingPurchase.amount_cents})});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.error);
+    document.getElementById('p-ref').textContent='Ref: '+data.external_ref;
+    document.getElementById('purchase-screen').style.display='none';
+    document.getElementById('purchase-success').style.display='block';
+    pendingPurchase=null;
+  } catch(e) {
+    showMsg('purchase-msg',`❌ ${e.message}`,'error');
+    btn.disabled=false; btn.textContent='✅ Confirmar y pagar →';
+  }
+}
+</script>
 </body>
 </html>
