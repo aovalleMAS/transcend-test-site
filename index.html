@@ -140,8 +140,8 @@ footer{padding:48px 5vw 32px;border-top:1px solid var(--border)}
   <a href="#" class="logo">Kónico <span class="logo-dot"></span></a>
   <ul class="nav-links">
     <li><a href="#productos">Productos</a></li>
-    <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener">Privacidad</a></li>
-    <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener">Mis derechos</a></li>
+    <li><a data-transcend href="https://dev-masanalytics-com.us.trsnd.co/policies" target="_blank" rel="noopener">Privacidad</a></li>
+    <li><a data-transcend href="https://dev-masanalytics-com.us.trsnd.co/policies" target="_blank" rel="noopener">Mis derechos</a></li>
   </ul>
   <div id="nav-user-area">
     <span class="user-chip" id="user-chip">👤 <span id="user-chip-name"></span></span>
@@ -159,7 +159,7 @@ footer{padding:48px 5vw 32px;border-top:1px solid var(--border)}
     <p class="hero-desc">Computadores, audio, smartphones y accesorios con envío en 24 horas a todo Chile. Calidad verificada, precios directos.</p>
     <div class="hero-ctas">
       <a href="#productos" class="btn btn-primary">Ver productos</a>
-      <a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener" class="btn btn-outline">Tu privacidad</a>
+      <a data-transcend href="https://dev-masanalytics-com.us.trsnd.co/policies" target="_blank" rel="noopener" class="btn btn-outline">Tu privacidad</a>
     </div>
   </div>
   <div class="hero-visual">
@@ -219,7 +219,7 @@ footer{padding:48px 5vw 32px;border-top:1px solid var(--border)}
             <div class="dsr-type"><span class="dsr-type-dot"></span>Eliminar mis datos</div>
             <div class="dsr-type"><span class="dsr-type-dot"></span>Portabilidad</div>
           </div>
-          <a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" rel="noopener" class="btn-dsr">🔒 &nbsp;Ir al portal de privacidad</a>
+          <a data-transcend href="https://dev-masanalytics-com.us.trsnd.co/policies" target="_blank" rel="noopener" class="btn-dsr">🔒 &nbsp;Ir al portal de privacidad</a>
         </div>
       </div>
     </div>
@@ -233,14 +233,14 @@ footer{padding:48px 5vw 32px;border-top:1px solid var(--border)}
     <div class="footer-col"><h4>Tienda</h4><ul><li><a href="#">Computadores</a></li><li><a href="#">Smartphones</a></li><li><a href="#">Audio</a></li></ul></div>
     <div class="footer-col"><h4>Ayuda</h4><ul><li><a href="#">Mi cuenta</a></li><li><a href="#">Seguir pedido</a></li><li><a href="#">Contacto</a></li></ul></div>
     <div class="footer-col"><h4>Privacidad</h4><ul>
-      <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank">Mis derechos</a></li>
-      <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank">Portal DSR</a></li>
-      <li><a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank">Ley 21.719</a></li>
+      <li><a data-transcend href="https://dev-masanalytics-com.us.trsnd.co/policies" target="_blank">Mis derechos</a></li>
+      <li><a data-transcend href="https://dev-masanalytics-com.us.trsnd.co/policies" target="_blank">Portal DSR</a></li>
+      <li><a data-transcend href="https://dev-masanalytics-com.us.trsnd.co/policies" target="_blank">Ley 21.719</a></li>
     </ul></div>
   </div>
   <div class="footer-bottom">
     <span>© 2026 Kónico SpA — Santiago, Chile</span>
-    <span>privacidad@konico.cl · <a href="https://dev-masanalytics-com.us.trsnd.co/es" target="_blank" style="color:inherit">Ley 21.719</a></span>
+    <span>privacidad@konico.cl · <a data-transcend href="https://dev-masanalytics-com.us.trsnd.co/policies" target="_blank" style="color:inherit">Ley 21.719</a></span>
   </div>
 </footer>
 
@@ -277,14 +277,16 @@ footer{padding:48px 5vw 32px;border-top:1px solid var(--border)}
         <div class="form-group"><label class="form-label">Región</label><input class="form-input" id="r-state_region" placeholder="Metropolitana"/></div>
       </div>
       <div class="form-group"><label class="form-label">Código postal</label><input class="form-input" id="r-postal_code" placeholder="7500000"/></div>
+      <hr class="form-divider"/>
+      <div class="form-group"><label class="form-label">Contraseña *</label><input class="form-input" id="r-password" type="password" placeholder="Mínimo 6 caracteres"/></div>
       <button class="btn-submit" id="btn-do-register" onclick="submitRegister()">Crear cuenta →</button>
     </div>
 
     <!-- LOGIN -->
     <div id="form-login" style="display:none">
       <div class="form-group"><label class="form-label">Email *</label><input class="form-input" id="l-email" type="email" placeholder="juan@email.com"/></div>
+      <div class="form-group"><label class="form-label">Contraseña *</label><input class="form-input" id="l-password" type="password" placeholder="Tu contraseña"/></div>
       <button class="btn-submit" id="btn-do-login" onclick="submitLogin()">Entrar →</button>
-      <p style="font-size:.78rem;color:var(--ink-muted);margin-top:10px;text-align:center">Para la demo solo necesitas tu email registrado</p>
     </div>
   </div>
 </div>
@@ -337,6 +339,7 @@ let cart = []; // [{description, amount_cents}]
 
 updateNavUser();
 renderCartFab();
+updateTranscendLinks();
 
 function updateNavUser() {
   const chip = document.getElementById('user-chip');
@@ -352,7 +355,16 @@ function updateNavUser() {
   }
 }
 
-function logout() { currentUser = null; localStorage.removeItem('konico_user'); updateNavUser(); }
+function logout() { currentUser = null; localStorage.removeItem('konico_user'); updateNavUser(); updateTranscendLinks(); }
+
+// ── LINKS TRANSCEND ───────────────────────────────────────────────────────
+function transcendUrl() {
+  const base = 'https://dev-masanalytics-com.us.trsnd.co/policies';
+  return currentUser ? `${base}?email=${encodeURIComponent(currentUser.email)}` : base;
+}
+function updateTranscendLinks() {
+  document.querySelectorAll('a[data-transcend]').forEach(a => a.href = transcendUrl());
+}
 
 // ── MODALES ──────────────────────────────────────────────────────────────
 function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow='hidden'; }
@@ -446,6 +458,7 @@ async function submitRegister() {
   const email        = document.getElementById('r-email').value.trim();
   const phone        = document.getElementById('r-phone').value.trim();
   const date_of_birth= document.getElementById('r-dob').value;
+  const password     = document.getElementById('r-password').value;
   const line1        = document.getElementById('r-line1').value.trim();
   const line2        = document.getElementById('r-line2').value.trim();
   const city         = document.getElementById('r-city').value.trim();
@@ -453,19 +466,20 @@ async function submitRegister() {
   const postal_code  = document.getElementById('r-postal_code').value.trim();
 
   if (!first_name||!last_name||!email) return showMsg('auth-msg','⚠️ Nombre, apellido y email son obligatorios.','error');
+  if (!password||password.length<6) return showMsg('auth-msg','⚠️ La contraseña debe tener al menos 6 caracteres.','error');
   if (!line1||!city) return showMsg('auth-msg','⚠️ Ingresa al menos calle y ciudad.','error');
 
   const btn=document.getElementById('btn-do-register');
   btn.disabled=true; btn.textContent='Registrando...';
   try {
     const res = await fetch(`${API}/register`,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({first_name,last_name,email,phone,date_of_birth,line1,line2,city,state_region,postal_code})});
+      body:JSON.stringify({first_name,last_name,email,phone,date_of_birth,password,line1,line2,city,state_region,postal_code})});
     const data=await res.json();
     if(!res.ok) throw new Error(data.error||'Error');
     currentUser={userId:data.userId,name:`${first_name} ${last_name}`,email};
     localStorage.setItem('konico_user',JSON.stringify(currentUser));
     showMsg('auth-msg',`✅ ¡Bienvenido ${first_name}! Cuenta creada.`,'success');
-    updateNavUser();
+    updateNavUser(); updateTranscendLinks();
     setTimeout(()=>closeModal('authModal'),1600);
   } catch(e) {
     showMsg('auth-msg', e.message==='Email ya registrado'
@@ -476,17 +490,18 @@ async function submitRegister() {
 // ── LOGIN ────────────────────────────────────────────────────────────────
 async function submitLogin() {
   const email=document.getElementById('l-email').value.trim();
-  if(!email) return showMsg('auth-msg','⚠️ Ingresa tu email.','error');
+  const password=document.getElementById('l-password').value;
+  if(!email||!password) return showMsg('auth-msg','⚠️ Ingresa email y contraseña.','error');
   const btn=document.getElementById('btn-do-login');
-  btn.disabled=true; btn.textContent='Buscando...';
+  btn.disabled=true; btn.textContent='Verificando...';
   try {
-    const res=await fetch(`${API}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    const res=await fetch(`${API}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
     const data=await res.json();
     if(!res.ok) throw new Error(data.error);
     currentUser={userId:data.userId,name:data.name,email};
     localStorage.setItem('konico_user',JSON.stringify(currentUser));
     showMsg('auth-msg',`✅ ¡Hola ${data.name.split(' ')[0]}!`,'success');
-    updateNavUser();
+    updateNavUser(); updateTranscendLinks();
     setTimeout(()=>closeModal('authModal'),1200);
   } catch(e) { showMsg('auth-msg',`❌ ${e.message}`,'error'); }
   finally { btn.disabled=false; btn.textContent='Entrar →'; }
