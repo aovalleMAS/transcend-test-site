@@ -59,6 +59,17 @@ nav{position:sticky;top:0;z-index:100;background:rgba(247,246,243,.92);backdrop-
 .tag-new{background:var(--lime);color:var(--ink)}.tag-sale{background:var(--coral);color:#fff}
 .buy-btn{display:block;width:100%;margin-top:12px;padding:10px;background:var(--ink);color:var(--lime);border:none;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:background .2s}
 .buy-btn:hover{background:#2a2a2a}
+.cart-fab{position:fixed;bottom:28px;right:28px;z-index:900;background:var(--ink);color:var(--lime);border:none;border-radius:50px;padding:14px 22px;font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 8px 32px rgba(0,0,0,.22);display:none;align-items:center;gap:10px;transition:transform .2s}
+.cart-fab:hover{transform:translateY(-2px)}
+.cart-badge{background:var(--coral);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700}
+.cart-line{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)}
+.cart-line:last-child{border-bottom:none}
+.cart-line-name{font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600}
+.cart-line-price{font-family:'Space Grotesk',sans-serif;font-weight:700;white-space:nowrap;margin-left:12px}
+.cart-line-remove{background:none;border:none;cursor:pointer;color:var(--coral);font-size:1.1rem;padding:0 6px;line-height:1}
+.cart-total{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:2px solid var(--ink)}
+.cart-total-label{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem}
+.cart-total-val{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.2rem}
 .privacy-section{background:var(--ink);color:var(--white);padding:80px 5vw;border-radius:24px;margin:0 3vw 60px}
 .privacy-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
 .privacy-eyebrow{font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--lime);margin-bottom:16px}
@@ -173,12 +184,12 @@ footer{padding:48px 5vw 32px;border-top:1px solid var(--border)}
 <section class="section" id="productos">
   <div class="section-header"><h2 class="section-title">Productos destacados</h2></div>
   <div class="products-grid" id="products-grid">
-    <div class="product"><div class="product-img">💻</div><div class="product-info"><div class="product-cat">Computadores</div><div class="product-name">UltraBook 14" Intel i7</div><div class="product-price">$649.990 <span class="product-tag tag-new">Nuevo</span></div><button class="buy-btn" onclick="initPurchase('UltraBook 14 Intel i7',64999000)">Comprar</button></div></div>
-    <div class="product"><div class="product-img">📱</div><div class="product-info"><div class="product-cat">Smartphones</div><div class="product-name">SmartPhone X12 Pro</div><div class="product-price">$489.990 <span class="product-tag tag-sale">-20%</span></div><button class="buy-btn" onclick="initPurchase('SmartPhone X12 Pro',48999000)">Comprar</button></div></div>
-    <div class="product"><div class="product-img">🎧</div><div class="product-info"><div class="product-cat">Audio</div><div class="product-name">Audífonos Noise Cancelling</div><div class="product-price">$89.990</div><button class="buy-btn" onclick="initPurchase('Audifonos Noise Cancelling',8999000)">Comprar</button></div></div>
-    <div class="product"><div class="product-img">⌨️</div><div class="product-info"><div class="product-cat">Accesorios</div><div class="product-name">Teclado Mecánico RGB</div><div class="product-price">$49.990 <span class="product-tag tag-sale">-15%</span></div><button class="buy-btn" onclick="initPurchase('Teclado Mecanico RGB',4999000)">Comprar</button></div></div>
-    <div class="product"><div class="product-img">🖥️</div><div class="product-info"><div class="product-cat">Monitores</div><div class="product-name">Monitor 27" 4K IPS</div><div class="product-price">$329.990 <span class="product-tag tag-new">Nuevo</span></div><button class="buy-btn" onclick="initPurchase('Monitor 27 4K IPS',32999000)">Comprar</button></div></div>
-    <div class="product"><div class="product-img">📷</div><div class="product-info"><div class="product-cat">Fotografía</div><div class="product-name">Cámara Mirrorless 24MP</div><div class="product-price">$799.990</div><button class="buy-btn" onclick="initPurchase('Camara Mirrorless 24MP',79999000)">Comprar</button></div></div>
+    <div class="product"><div class="product-img">💻</div><div class="product-info"><div class="product-cat">Computadores</div><div class="product-name">UltraBook 14" Intel i7</div><div class="product-price">$649.990 <span class="product-tag tag-new">Nuevo</span></div><button class="buy-btn" onclick="addToCart('UltraBook 14 Intel i7',64999000)">+ Agregar al carrito</button></div></div>
+    <div class="product"><div class="product-img">📱</div><div class="product-info"><div class="product-cat">Smartphones</div><div class="product-name">SmartPhone X12 Pro</div><div class="product-price">$489.990 <span class="product-tag tag-sale">-20%</span></div><button class="buy-btn" onclick="addToCart('SmartPhone X12 Pro',48999000)">+ Agregar al carrito</button></div></div>
+    <div class="product"><div class="product-img">🎧</div><div class="product-info"><div class="product-cat">Audio</div><div class="product-name">Audífonos Noise Cancelling</div><div class="product-price">$89.990</div><button class="buy-btn" onclick="addToCart('Audifonos Noise Cancelling',8999000)">+ Agregar al carrito</button></div></div>
+    <div class="product"><div class="product-img">⌨️</div><div class="product-info"><div class="product-cat">Accesorios</div><div class="product-name">Teclado Mecánico RGB</div><div class="product-price">$49.990 <span class="product-tag tag-sale">-15%</span></div><button class="buy-btn" onclick="addToCart('Teclado Mecanico RGB',4999000)">+ Agregar al carrito</button></div></div>
+    <div class="product"><div class="product-img">🖥️</div><div class="product-info"><div class="product-cat">Monitores</div><div class="product-name">Monitor 27" 4K IPS</div><div class="product-price">$329.990 <span class="product-tag tag-new">Nuevo</span></div><button class="buy-btn" onclick="addToCart('Monitor 27 4K IPS',32999000)">+ Agregar al carrito</button></div></div>
+    <div class="product"><div class="product-img">📷</div><div class="product-info"><div class="product-cat">Fotografía</div><div class="product-name">Cámara Mirrorless 24MP</div><div class="product-price">$799.990</div><button class="buy-btn" onclick="addToCart('Camara Mirrorless 24MP',79999000)">+ Agregar al carrito</button></div></div>
   </div>
 </section>
 
@@ -278,24 +289,27 @@ footer{padding:48px 5vw 32px;border-top:1px solid var(--border)}
   </div>
 </div>
 
-<!-- ══ MODAL COMPRA ══ -->
+<!-- ══ CARRITO FAB ══ -->
+<button class="cart-fab" id="cart-fab" onclick="openCart()">
+  🛒 Ver carrito <span class="cart-badge" id="cart-count">0</span>
+</button>
+
+<!-- ══ MODAL CARRITO ══ -->
 <div class="modal-overlay" id="purchaseModal" onclick="closeOnBg(event,'purchaseModal')">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('purchaseModal')">✕</button>
 
     <div id="purchase-screen">
       <div class="modal-icon">🛒</div>
-      <h2>Confirmar compra</h2>
+      <h2>Tu carrito</h2>
       <p class="subtitle">Revisa tu pedido antes de confirmar</p>
       <div id="purchase-msg" class="modal-msg"></div>
-      <div class="purchase-item">
-        <div class="purchase-item-info">
-          <h4 id="p-name">—</h4>
-          <p>Envío 24–48 hrs · Garantía 12 meses</p>
-        </div>
-        <div class="purchase-item-price" id="p-price">—</div>
+      <div id="cart-lines"></div>
+      <div class="cart-total">
+        <span class="cart-total-label">Total</span>
+        <span class="cart-total-val" id="cart-total-val">$0</span>
       </div>
-      <div class="purchase-item" style="background:var(--ink);color:#fff;border-color:transparent">
+      <div class="purchase-item" style="background:var(--ink);color:#fff;border-color:transparent;margin-top:14px">
         <div class="purchase-item-info">
           <h4>Cuenta</h4>
           <p id="p-email" style="color:rgba(255,255,255,.6)">—</p>
@@ -309,21 +323,20 @@ footer{padding:48px 5vw 32px;border-top:1px solid var(--border)}
       <div class="big-icon">🎉</div>
       <h3>¡Compra realizada!</h3>
       <p>Tu pedido quedó registrado en nuestro sistema.<br/>Recibirás confirmación por email pronto.</p>
-      <div class="ref-badge" id="p-ref"></div>
+      <div id="p-refs"></div>
       <button class="btn-submit" style="margin-top:20px" onclick="closeModal('purchaseModal')">Cerrar</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── CONFIG — actualiza esta URL después del deploy en Vercel ──────────────
 const API = 'https://konico-api.vercel.app/api';
 
-// ── ESTADO ───────────────────────────────────────────────────────────────
 let currentUser = JSON.parse(localStorage.getItem('konico_user') || 'null');
-let pendingPurchase = null;
+let cart = []; // [{description, amount_cents}]
 
 updateNavUser();
+renderCartFab();
 
 function updateNavUser() {
   const chip = document.getElementById('user-chip');
@@ -343,7 +356,18 @@ function logout() { currentUser = null; localStorage.removeItem('konico_user'); 
 
 // ── MODALES ──────────────────────────────────────────────────────────────
 function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow='hidden'; }
-function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow=''; }
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+  document.body.style.overflow='';
+  // reset purchase modal state on close
+  if (id === 'purchaseModal') {
+    document.getElementById('purchase-screen').style.display = 'block';
+    document.getElementById('purchase-success').style.display = 'none';
+    const btn = document.getElementById('btn-confirm');
+    btn.disabled = false; btn.textContent = '✅ Confirmar y pagar →';
+    showMsg('purchase-msg','','');
+  }
+}
 function closeOnBg(e,id) { if(e.target===document.getElementById(id)) closeModal(id); }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'){closeModal('authModal');closeModal('purchaseModal');}});
 
@@ -360,6 +384,59 @@ function switchTab(tab) {
 function showMsg(id,text,type) {
   const el=document.getElementById(id);
   el.textContent=text; el.className='modal-msg'+(type?' '+type:''); el.style.display=text?'block':'none';
+}
+
+// ── CARRITO ───────────────────────────────────────────────────────────────
+function addToCart(description, amount_cents) {
+  if (!currentUser) {
+    openAuth('login');
+    showMsg('auth-msg','⚠️ Inicia sesión para agregar al carrito.','error');
+    return;
+  }
+  cart.push({description, amount_cents});
+  renderCartFab();
+  // feedback visual breve
+  const fab = document.getElementById('cart-fab');
+  fab.style.background = '#2a2a2a';
+  setTimeout(() => fab.style.background = '', 300);
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  renderCartFab();
+  renderCartLines();
+}
+
+function renderCartFab() {
+  const fab = document.getElementById('cart-fab');
+  const badge = document.getElementById('cart-count');
+  badge.textContent = cart.length;
+  fab.style.display = cart.length > 0 ? 'flex' : 'none';
+}
+
+function renderCartLines() {
+  const container = document.getElementById('cart-lines');
+  if (cart.length === 0) { container.innerHTML = '<p style="color:var(--ink-muted);font-size:.88rem;text-align:center;padding:12px 0">El carrito está vacío</p>'; return; }
+  container.innerHTML = cart.map((item, i) => `
+    <div class="cart-line">
+      <div>
+        <div class="cart-line-name">${item.description}</div>
+        <div style="font-size:.75rem;color:var(--ink-muted)">Envío 24–48 hrs · Garantía 12 meses</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span class="cart-line-price">$${(item.amount_cents/100).toLocaleString('es-CL')}</span>
+        <button class="cart-line-remove" onclick="removeFromCart(${i})" title="Eliminar">✕</button>
+      </div>
+    </div>`).join('');
+  const total = cart.reduce((s,i)=>s+i.amount_cents,0);
+  document.getElementById('cart-total-val').textContent = '$'+(total/100).toLocaleString('es-CL');
+}
+
+function openCart() {
+  if (!currentUser) { openAuth('login'); return; }
+  document.getElementById('p-email').textContent = currentUser.email;
+  renderCartLines();
+  openModal('purchaseModal');
 }
 
 // ── REGISTRO ─────────────────────────────────────────────────────────────
@@ -415,42 +492,30 @@ async function submitLogin() {
   finally { btn.disabled=false; btn.textContent='Entrar →'; }
 }
 
-// ── COMPRA ───────────────────────────────────────────────────────────────
-function initPurchase(description, amount_cents) {
-  if(!currentUser) {
-    pendingPurchase={description,amount_cents};
-    openAuth('login');
-    showMsg('auth-msg','⚠️ Inicia sesión para comprar.','error');
-    return;
-  }
-  pendingPurchase={description,amount_cents};
-  document.getElementById('p-name').textContent=description;
-  // amount_cents está en centavos → mostrar en pesos
-  const pesos=amount_cents/100;
-  document.getElementById('p-price').textContent='$'+pesos.toLocaleString('es-CL');
-  document.getElementById('p-email').textContent=currentUser.email;
-  document.getElementById('purchase-screen').style.display='block';
-  document.getElementById('purchase-success').style.display='none';
-  showMsg('purchase-msg','','');
-  openModal('purchaseModal');
-}
-
+// ── CONFIRMAR COMPRA ──────────────────────────────────────────────────────
 async function confirmPurchase() {
-  if(!currentUser||!pendingPurchase) return;
-  const btn=document.getElementById('btn-confirm');
-  btn.disabled=true; btn.textContent='Procesando...';
+  if (!currentUser || cart.length === 0) return;
+  const btn = document.getElementById('btn-confirm');
+  btn.disabled = true; btn.textContent = 'Procesando...';
+  showMsg('purchase-msg','','');
   try {
-    const res=await fetch(`${API}/purchase`,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({userId:currentUser.userId,description:pendingPurchase.description,amount_cents:pendingPurchase.amount_cents})});
-    const data=await res.json();
-    if(!res.ok) throw new Error(data.error);
-    document.getElementById('p-ref').textContent='Ref: '+data.external_ref;
-    document.getElementById('purchase-screen').style.display='none';
-    document.getElementById('purchase-success').style.display='block';
-    pendingPurchase=null;
+    const refs = [];
+    for (const item of cart) {
+      const res = await fetch(`${API}/purchase`, {method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({userId: currentUser.userId, description: item.description, amount_cents: item.amount_cents})});
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      refs.push(data.external_ref);
+    }
+    // éxito: mostrar refs y limpiar carrito
+    document.getElementById('p-refs').innerHTML = refs.map(r=>`<div class="ref-badge" style="display:block;margin-top:6px">Ref: ${r}</div>`).join('');
+    cart = [];
+    renderCartFab();
+    document.getElementById('purchase-screen').style.display = 'none';
+    document.getElementById('purchase-success').style.display = 'block';
   } catch(e) {
-    showMsg('purchase-msg',`❌ ${e.message}`,'error');
-    btn.disabled=false; btn.textContent='✅ Confirmar y pagar →';
+    showMsg('purchase-msg', `❌ ${e.message}`, 'error');
+    btn.disabled = false; btn.textContent = '✅ Confirmar y pagar →';
   }
 }
 </script>
