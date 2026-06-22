@@ -358,14 +358,32 @@ function updateNavUser() {
 function logout() { currentUser = null; localStorage.removeItem('konico_user'); updateNavUser(); updateTranscendLinks(); }
 
 // ── LINKS TRANSCEND ───────────────────────────────────────────────────────
-function transcendUrl() {
-  const base = 'https://dev-masanalytics-com.us.trsnd.co/policies/es/';
-  return currentUser
-    ? `${base}?modal=log-in&email=${encodeURIComponent(currentUser.email)}`
-    : base;
-}
+const TRANSCEND_BASE = 'https://dev-masanalytics-com.us.trsnd.co/policies/es/';
+
 function updateTranscendLinks() {
-  document.querySelectorAll('a[data-transcend]').forEach(a => a.href = transcendUrl());
+  document.querySelectorAll('a[data-transcend]').forEach(a => {
+    if (currentUser) {
+      a.onclick = async function(e) {
+        e.preventDefault();
+        try {
+          const res = await fetch(`${API}/transcend-token`, {
+            method: 'POST', headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ email: currentUser.email })
+          });
+          const data = await res.json();
+          const url = data.token
+            ? `${TRANSCEND_BASE}?jwt=${encodeURIComponent(data.token)}`
+            : TRANSCEND_BASE;
+          window.open(url, '_blank');
+        } catch {
+          window.open(TRANSCEND_BASE, '_blank');
+        }
+      };
+    } else {
+      a.onclick = null;
+      a.href = TRANSCEND_BASE;
+    }
+  });
 }
 
 // ── MODALES ──────────────────────────────────────────────────────────────
