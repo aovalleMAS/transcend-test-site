@@ -201,12 +201,12 @@ footer{padding:48px 5vw 32px;border-top:1px solid var(--border)}
 <section class="section" id="productos">
   <div class="section-header"><h2 class="section-title">Productos destacados</h2></div>
   <div class="products-grid" id="products-grid">
-    <div class="product"><div class="product-img">💻</div><div class="product-info"><div class="product-cat">Computadores</div><div class="product-name">UltraBook 14" Intel i7</div><div class="product-price">$649.990 <span class="product-tag tag-new">Nuevo</span></div><button class="buy-btn" onclick="addToCart('UltraBook 14 Intel i7',64999000)">+ Agregar al carrito</button></div></div>
-    <div class="product"><div class="product-img">📱</div><div class="product-info"><div class="product-cat">Smartphones</div><div class="product-name">SmartPhone X12 Pro</div><div class="product-price">$489.990 <span class="product-tag tag-sale">-20%</span></div><button class="buy-btn" onclick="addToCart('SmartPhone X12 Pro',48999000)">+ Agregar al carrito</button></div></div>
-    <div class="product"><div class="product-img">🎧</div><div class="product-info"><div class="product-cat">Audio</div><div class="product-name">Audífonos Noise Cancelling</div><div class="product-price">$89.990</div><button class="buy-btn" onclick="addToCart('Audifonos Noise Cancelling',8999000)">+ Agregar al carrito</button></div></div>
-    <div class="product"><div class="product-img">⌨️</div><div class="product-info"><div class="product-cat">Accesorios</div><div class="product-name">Teclado Mecánico RGB</div><div class="product-price">$49.990 <span class="product-tag tag-sale">-15%</span></div><button class="buy-btn" onclick="addToCart('Teclado Mecanico RGB',4999000)">+ Agregar al carrito</button></div></div>
-    <div class="product"><div class="product-img">🖥️</div><div class="product-info"><div class="product-cat">Monitores</div><div class="product-name">Monitor 27" 4K IPS</div><div class="product-price">$329.990 <span class="product-tag tag-new">Nuevo</span></div><button class="buy-btn" onclick="addToCart('Monitor 27 4K IPS',32999000)">+ Agregar al carrito</button></div></div>
-    <div class="product"><div class="product-img">📷</div><div class="product-info"><div class="product-cat">Fotografía</div><div class="product-name">Cámara Mirrorless 24MP</div><div class="product-price">$799.990</div><button class="buy-btn" onclick="addToCart('Camara Mirrorless 24MP',79999000)">+ Agregar al carrito</button></div></div>
+    <div class="product"><div class="product-img">💻</div><div class="product-info"><div class="product-cat">Computadores</div><div class="product-name">UltraBook 14" Intel i7</div><div class="product-price">$649.990 <span class="product-tag tag-new">Nuevo</span></div><button class="buy-btn" onclick="addToCart('UltraBook 14 Intel i7',649990)">+ Agregar al carrito</button></div></div>
+    <div class="product"><div class="product-img">📱</div><div class="product-info"><div class="product-cat">Smartphones</div><div class="product-name">SmartPhone X12 Pro</div><div class="product-price">$489.990 <span class="product-tag tag-sale">-20%</span></div><button class="buy-btn" onclick="addToCart('SmartPhone X12 Pro',489990)">+ Agregar al carrito</button></div></div>
+    <div class="product"><div class="product-img">🎧</div><div class="product-info"><div class="product-cat">Audio</div><div class="product-name">Audífonos Noise Cancelling</div><div class="product-price">$89.990</div><button class="buy-btn" onclick="addToCart('Audifonos Noise Cancelling',89990)">+ Agregar al carrito</button></div></div>
+    <div class="product"><div class="product-img">⌨️</div><div class="product-info"><div class="product-cat">Accesorios</div><div class="product-name">Teclado Mecánico RGB</div><div class="product-price">$49.990 <span class="product-tag tag-sale">-15%</span></div><button class="buy-btn" onclick="addToCart('Teclado Mecanico RGB',49990)">+ Agregar al carrito</button></div></div>
+    <div class="product"><div class="product-img">🖥️</div><div class="product-info"><div class="product-cat">Monitores</div><div class="product-name">Monitor 27" 4K IPS</div><div class="product-price">$329.990 <span class="product-tag tag-new">Nuevo</span></div><button class="buy-btn" onclick="addToCart('Monitor 27 4K IPS',329990)">+ Agregar al carrito</button></div></div>
+    <div class="product"><div class="product-img">📷</div><div class="product-info"><div class="product-cat">Fotografía</div><div class="product-name">Cámara Mirrorless 24MP</div><div class="product-price">$799.990</div><button class="buy-btn" onclick="addToCart('Camara Mirrorless 24MP',799990)">+ Agregar al carrito</button></div></div>
   </div>
 </section>
 
@@ -508,12 +508,12 @@ function renderCartLines() {
         <div style="font-size:.75rem;color:var(--ink-muted)">Envío 24–48 hrs · Garantía 12 meses</div>
       </div>
       <div style="display:flex;align-items:center;gap:6px">
-        <span class="cart-line-price">$${(item.amount_cents/100).toLocaleString('es-CL')}</span>
+        <span class="cart-line-price">$${item.amount_cents.toLocaleString('es-CL')}</span>
         <button class="cart-line-remove" onclick="removeFromCart(${i})" title="Eliminar">✕</button>
       </div>
     </div>`).join('');
   const total = cart.reduce((s,i)=>s+i.amount_cents,0);
-  document.getElementById('cart-total-val').textContent = '$'+(total/100).toLocaleString('es-CL');
+  document.getElementById('cart-total-val').textContent = '$'+total.toLocaleString('es-CL');
 }
 
 function openCart() {
