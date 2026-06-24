@@ -366,8 +366,8 @@
 
     try {
       const [uRes, tRes] = await Promise.all([
-        fetch(`${API}/admin-users`,        { headers: { 'x-admin-key': ADMIN_KEY } }),
-        fetch(`${API}/admin-transactions`, { headers: { 'x-admin-key': ADMIN_KEY } }),
+        fetch(`${API}/admin-users`),
+        fetch(`${API}/admin-transactions`),
       ]);
       const uData = await uRes.json();
       const tData = await tRes.json();
