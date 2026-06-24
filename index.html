@@ -341,6 +341,7 @@ footer{padding:48px 5vw 32px;border-top:1px solid var(--border)}
 
 <script>
 const API = 'https://konico-api.vercel.app/api';
+const TRANSCEND_BASE = 'https://dev-masanalytics-com.us.trsnd.co/policies/es/';
 
 let currentUser = JSON.parse(localStorage.getItem('konico_user') || 'null');
 let cart = []; // [{description, amount_cents}]
@@ -366,7 +367,6 @@ function updateNavUser() {
 function logout() { currentUser = null; localStorage.removeItem('konico_user'); updateNavUser(); updateTranscendLinks(); }
 
 // ── LINKS TRANSCEND ───────────────────────────────────────────────────────
-const TRANSCEND_BASE = 'https://dev-masanalytics-com.us.trsnd.co/policies/es/';
 
 function updateTranscendLinks() {
   document.querySelectorAll('a[data-transcend]').forEach(a => {
