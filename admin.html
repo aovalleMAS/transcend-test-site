@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kónico — Portal Interno</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+    }
+    .login-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 48px 40px;
+      width: 360px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    .login-card .logo { font-size: 2rem; font-weight: 800; color: #0f3460; margin-bottom: 6px; }
+    .login-card .sub  { font-size: .85rem; color: #666; margin-bottom: 32px; letter-spacing: .5px; text-transform: uppercase; }
+    .login-card input {
+      width: 100%; padding: 12px 16px; border: 1.5px solid #ddd; border-radius: 8px;
+      font-size: .95rem; margin-bottom: 16px; outline: none; transition: border .2s;
+    }
+    .login-card input:focus { border-color: #0f3460; }
+    .login-card button {
+      width: 100%; padding: 13px; background: #0f3460; color: #fff;
+      border: none; border-radius: 8px; font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: background .2s;
+    }
+    .login-card button:hover { background: #e94560; }
+    #login-error { color: #e94560; font-size: .85rem; margin-top: 10px; min-height: 18px; }
+
+    /* ── DASHBOARD ── */
+    #dashboard { display: none; }
+
+    header {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 12px rgba(0,0,0,.3);
+    }
+    .header-brand { font-size: 1.3rem; font-weight: 800; }
+    .header-brand span { color: #e94560; }
+    .header-right { display: flex; align-items: center; gap: 20px; }
+    .header-badge {
+      background: #e94560;
+      color: #fff;
+      font-size: .7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .btn-logout {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,.3);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: .85rem;
+      transition: all .2s;
+    }
+    .btn-logout:hover { background: rgba(255,255,255,.1); }
+
+    main { padding: 32px; max-width: 1300px; margin: 0 auto; }
+
+    /* ── KPI CARDS ── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 36px;
+    }
+    .kpi-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.07);
+      border-left: 4px solid #0f3460;
+    }
+    .kpi-card.green  { border-color: #22c55e; }
+    .kpi-card.red    { border-color: #e94560; }
+    .kpi-card.orange { border-color: #f97316; }
+    .kpi-label { font-size: .78rem; color: #666; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+    .kpi-value { font-size: 2rem; font-weight: 800; color: #1a1a2e; }
+    .kpi-sub   { font-size: .8rem; color: #888; margin-top: 4px; }
+
+    /* ── SECTION ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .section-title { font-size: 1.1rem; font-weight: 700; color: #1a1a2e; }
+    .btn-refresh {
+      background: #f0f2f5;
+      border: 1px solid #ddd;
+      color: #444;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: .82rem;
+      transition: background .2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-refresh:hover { background: #e2e6ea; }
+    .btn-refresh.spinning .icon { animation: spin .7s linear infinite; display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: #e8eaed;
+      border-radius: 10px;
+      padding: 4px;
+      width: fit-content;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      padding: 8px 20px;
+      border: none;
+      background: transparent;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: .9rem;
+      font-weight: 500;
+      color: #555;
+      transition: all .15s;
+    }
+    .tab-btn.active { background: #fff; color: #0f3460; font-weight: 700; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.07);
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    thead { background: #1a1a2e; color: #fff; }
+    thead th { padding: 14px 16px; text-align: left; font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .4px; }
+    tbody tr { border-bottom: 1px solid #f0f2f5; transition: background .1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f8f9fb; }
+    tbody td { padding: 13px 16px; color: #333; }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: .75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+    .badge-paid    { background: #dcfce7; color: #166534; }
+    .badge-pending { background: #fef9c3; color: #854d0e; }
+    .empty-row td  { text-align: center; padding: 40px; color: #aaa; font-style: italic; }
+
+    /* ── FOOTER NOTE ── */
+    .privacy-note {
+      margin-top: 24px;
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 10px;
+      padding: 16px 20px;
+      font-size: .85rem;
+      color: #664d03;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .privacy-note .icon { font-size: 1.2rem; flex-shrink: 0; }
+
+    @media (max-width: 700px) {
+      main { padding: 16px; }
+      .kpi-value { font-size: 1.5rem; }
+      thead th, tbody td { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="logo">Kónico</div>
+    <div class="sub">Portal Interno · Acceso Restringido</div>
+    <input type="password" id="pwd-input" placeholder="Contraseña de acceso" autocomplete="current-password" />
+    <button onclick="doLogin()">Ingresar</button>
+    <div id="login-error"></div>
+  </div>
+</div>
+
+<!-- ── DASHBOARD ── -->
+<div id="dashboard">
+  <header>
+    <div class="header-brand">Kónico <span>Admin</span></div>
+    <div class="header-right">
+      <span class="header-badge">⚙ Portal Interno</span>
+      <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Usuarios registrados</div>
+        <div class="kpi-value" id="kpi-users">—</div>
+        <div class="kpi-sub">en la base de datos</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">Compras realizadas</div>
+        <div class="kpi-value" id="kpi-txns">—</div>
+        <div class="kpi-sub">transacciones totales</div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="kpi-label">Ingresos totales</div>
+        <div class="kpi-value" id="kpi-revenue">—</div>
+        <div class="kpi-sub">en CLP</div>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-label">Últ. actualización</div>
+        <div class="kpi-value" id="kpi-time" style="font-size:1.1rem;padding-top:6px">—</div>
+        <div class="kpi-sub">hora local</div>
+      </div>
+    </div>
+
+    <!-- Tabs + Refresh -->
+    <div class="section-header">
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-users-btn"    onclick="showTab('users')">👥 Usuarios</button>
+        <button class="tab-btn"        id="tab-txns-btn"     onclick="showTab('txns')">🧾 Compras</button>
+      </div>
+      <button class="btn-refresh" id="btn-refresh" onclick="loadAll()">
+        <span class="icon">↻</span> Actualizar
+      </button>
+    </div>
+
+    <!-- Tabla Usuarios -->
+    <div id="tab-users" class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Fecha de nac.</th>
+            <th>Ciudad</th>
+            <th>Registro</th>
+          </tr>
+        </thead>
+        <tbody id="users-tbody">
+          <tr class="empty-row"><td colspan="7">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tabla Compras -->
+    <div id="tab-txns" class="table-wrap" style="display:none">
+      <table>
+        <thead>
+          <tr>
+            <th>Ref.</th>
+            <th>Cliente</th>
+            <th>Email</th>
+            <th>Producto</th>
+            <th>Monto</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody id="txns-tbody">
+          <tr class="empty-row"><td colspan="7">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Nota privacidad -->
+    <div class="privacy-note" style="margin-top:28px">
+      <span class="icon">🔒</span>
+      <span>
+        <strong>Privacidad y Ley 21.719:</strong>
+        Cuando un cliente ejerce su derecho de eliminación a través del portal Transcend y la solicitud es aprobada,
+        sus datos son eliminados de la base de datos. Al presionar <em>Actualizar</em>, el usuario desaparece de esta
+        vista confirmando que el derecho fue ejercido correctamente.
+      </span>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const API      = 'https://konico-api.vercel.app/api';
+  const ADMIN_KEY = '123456';
+  const PASS      = '123456';
+
+  // ── LOGIN ──
+  document.getElementById('pwd-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  function doLogin() {
+    const val = document.getElementById('pwd-input').value.trim();
+    if (val === PASS) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      loadAll();
+    } else {
+      document.getElementById('login-error').textContent = 'Contraseña incorrecta.';
+      document.getElementById('pwd-input').value = '';
+      document.getElementById('pwd-input').focus();
+    }
+  }
+
+  function doLogout() {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('login-error').textContent = '';
+  }
+
+  // ── TABS ──
+  function showTab(tab) {
+    document.getElementById('tab-users').style.display = tab === 'users' ? 'block' : 'none';
+    document.getElementById('tab-txns').style.display  = tab === 'txns'  ? 'block' : 'none';
+    document.getElementById('tab-users-btn').classList.toggle('active', tab === 'users');
+    document.getElementById('tab-txns-btn').classList.toggle('active',  tab === 'txns');
+  }
+
+  // ── LOAD ──
+  async function loadAll() {
+    const btn = document.getElementById('btn-refresh');
+    btn.classList.add('spinning');
+    btn.disabled = true;
+
+    try {
+      const [uRes, tRes] = await Promise.all([
+        fetch(`${API}/admin-users`,        { headers: { 'x-admin-key': ADMIN_KEY } }),
+        fetch(`${API}/admin-transactions`, { headers: { 'x-admin-key': ADMIN_KEY } }),
+      ]);
+      const uData = await uRes.json();
+      const tData = await tRes.json();
+
+      renderUsers(uData.users || []);
+      renderTxns(tData.transactions || []);
+
+      const totalCLP = (tData.transactions || []).reduce((s, t) => s + Number(t.amount_cents), 0);
+      document.getElementById('kpi-users').textContent   = (uData.users || []).length;
+      document.getElementById('kpi-txns').textContent    = (tData.transactions || []).length;
+      document.getElementById('kpi-revenue').textContent = '$' + totalCLP.toLocaleString('es-CL');
+      document.getElementById('kpi-time').textContent    = new Date().toLocaleTimeString('es-CL');
+    } catch (e) {
+      alert('Error al cargar datos: ' + e.message);
+    } finally {
+      btn.classList.remove('spinning');
+      btn.disabled = false;
+    }
+  }
+
+  function renderUsers(users) {
+    const tbody = document.getElementById('users-tbody');
+    if (!users.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No hay usuarios registrados.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = users.map(u => `
+      <tr>
+        <td style="color:#aaa;font-size:.8rem">${u.user_id}</td>
+        <td><strong>${u.first_name} ${u.last_name}</strong></td>
+        <td>${u.email}</td>
+        <td>${u.phone || '<span style="color:#ccc">—</span>'}</td>
+        <td>${u.date_of_birth ? fmtDate(u.date_of_birth) : '<span style="color:#ccc">—</span>'}</td>
+        <td>${u.city || '<span style="color:#ccc">—</span>'}</td>
+        <td>${fmtDateTime(u.created_at)}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderTxns(txns) {
+    const tbody = document.getElementById('txns-tbody');
+    if (!txns.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No hay compras registradas.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = txns.map(t => `
+      <tr>
+        <td style="font-family:monospace;font-size:.8rem;color:#888">${t.external_ref}</td>
+        <td><strong>${t.first_name} ${t.last_name}</strong></td>
+        <td>${t.email}</td>
+        <td>${t.description}</td>
+        <td><strong>$${Number(t.amount_cents).toLocaleString('es-CL')} ${t.currency}</strong></td>
+        <td><span class="badge badge-${t.status === 'paid' ? 'paid' : 'pending'}">${t.status}</span></td>
+        <td>${fmtDateTime(t.transaction_at)}</td>
+      </tr>
+    `).join('');
+  }
+
+  function fmtDate(d) {
+    if (!d) return '—';
+    return new Date(d).toLocaleDateString('es-CL');
+  }
+  function fmtDateTime(d) {
+    if (!d) return '—';
+    return new Date(d).toLocaleString('es-CL', { dateStyle: 'short', timeStyle: 'short' });
+  }
+</script>
+</body>
+</html>
