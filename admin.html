@@ -88,6 +88,54 @@
 
     main { padding: 32px; max-width: 1300px; margin: 0 auto; }
 
+    /* ── FILTRO USUARIO ── */
+    .filter-bar {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.07);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .filter-bar label { font-size: .82rem; font-weight: 600; color: #555; white-space: nowrap; }
+    .filter-bar select {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: .9rem;
+      color: #1a1a2e;
+      outline: none;
+      cursor: pointer;
+      transition: border .2s;
+    }
+    .filter-bar select:focus { border-color: #0f3460; }
+    .btn-clear-filter {
+      padding: 8px 16px;
+      background: #f0f2f5;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: .82rem;
+      color: #555;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .2s;
+    }
+    .btn-clear-filter:hover { background: #e2e6ea; }
+    .filter-active-badge {
+      display: none;
+      background: #0f3460;
+      color: #fff;
+      font-size: .75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
     /* ── KPI CARDS ── */
     .kpi-row {
       display: grid;
@@ -116,7 +164,6 @@
       justify-content: space-between;
       margin-bottom: 16px;
     }
-    .section-title { font-size: 1.1rem; font-weight: 700; color: #1a1a2e; }
     .btn-refresh {
       background: #f0f2f5;
       border: 1px solid #ddd;
@@ -171,6 +218,14 @@
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover { background: #f8f9fb; }
     tbody td { padding: 13px 16px; color: #333; }
+
+    /* fila de usuario clickeable */
+    tr.user-row { cursor: pointer; }
+    tr.user-row:hover { background: #eef2ff !important; }
+    tr.user-row.selected { background: #dbeafe !important; }
+    tr.user-row td:first-child::before { content: ''; }
+    .click-hint { font-size: .72rem; color: #94a3b8; margin-left: 6px; }
+
     .badge {
       display: inline-block;
       padding: 3px 10px;
@@ -231,17 +286,27 @@
 
   <main>
 
+    <!-- Filtro de usuario -->
+    <div class="filter-bar">
+      <label>🔍 Filtrar por usuario:</label>
+      <select id="user-filter" onchange="applyFilter()">
+        <option value="">— Todos los usuarios —</option>
+      </select>
+      <button class="btn-clear-filter" onclick="clearFilter()">✕ Limpiar filtro</button>
+      <span class="filter-active-badge" id="filter-badge">Filtrando</span>
+    </div>
+
     <!-- KPIs -->
     <div class="kpi-row">
       <div class="kpi-card">
         <div class="kpi-label">Usuarios registrados</div>
         <div class="kpi-value" id="kpi-users">—</div>
-        <div class="kpi-sub">en la base de datos</div>
+        <div class="kpi-sub" id="kpi-users-sub">en la base de datos</div>
       </div>
       <div class="kpi-card green">
         <div class="kpi-label">Compras realizadas</div>
         <div class="kpi-value" id="kpi-txns">—</div>
-        <div class="kpi-sub">transacciones totales</div>
+        <div class="kpi-sub" id="kpi-txns-sub">transacciones totales</div>
       </div>
       <div class="kpi-card orange">
         <div class="kpi-label">Ingresos totales</div>
@@ -258,8 +323,8 @@
     <!-- Tabs + Refresh -->
     <div class="section-header">
       <div class="tabs">
-        <button class="tab-btn active" id="tab-users-btn"    onclick="showTab('users')">👥 Usuarios</button>
-        <button class="tab-btn"        id="tab-txns-btn"     onclick="showTab('txns')">🧾 Compras</button>
+        <button class="tab-btn active" id="tab-users-btn" onclick="showTab('users')">👥 Usuarios</button>
+        <button class="tab-btn"        id="tab-txns-btn"  onclick="showTab('txns')">🧾 Compras</button>
       </div>
       <button class="btn-refresh" id="btn-refresh" onclick="loadAll()">
         <span class="icon">↻</span> Actualizar
@@ -272,7 +337,7 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Nombre</th>
+            <th>Nombre <span class="click-hint">· clic para filtrar compras</span></th>
             <th>Email</th>
             <th>Teléfono</th>
             <th>Fecha de nac.</th>
@@ -321,9 +386,12 @@
 </div>
 
 <script>
-  const API      = 'https://konico-api.vercel.app/api';
-  const ADMIN_KEY = '123456';
-  const PASS      = '123456';
+  const API  = 'https://konico-api.vercel.app/api';
+  const PASS = '123456';
+
+  let allUsers = [];
+  let allTxns  = [];
+  let selectedUserId = null;
 
   // ── LOGIN ──
   document.getElementById('pwd-input').addEventListener('keydown', e => {
@@ -358,11 +426,66 @@
     document.getElementById('tab-txns-btn').classList.toggle('active',  tab === 'txns');
   }
 
+  // ── FILTRO ──
+  function applyFilter() {
+    const sel = document.getElementById('user-filter');
+    selectedUserId = sel.value ? Number(sel.value) : null;
+    refreshKpis();
+    renderTxns(filteredTxns());
+    // resaltar fila seleccionada en tabla usuarios
+    document.querySelectorAll('tr.user-row').forEach(tr => {
+      tr.classList.toggle('selected', Number(tr.dataset.uid) === selectedUserId);
+    });
+    document.getElementById('filter-badge').style.display = selectedUserId ? 'inline-block' : 'none';
+  }
+
+  function clearFilter() {
+    selectedUserId = null;
+    document.getElementById('user-filter').value = '';
+    document.getElementById('filter-badge').style.display = 'none';
+    document.querySelectorAll('tr.user-row').forEach(tr => tr.classList.remove('selected'));
+    refreshKpis();
+    renderTxns(allTxns);
+  }
+
+  function filteredTxns() {
+    if (!selectedUserId) return allTxns;
+    return allTxns.filter(t => t.user_id === selectedUserId);
+  }
+
+  function selectUser(userId) {
+    selectedUserId = userId;
+    document.getElementById('user-filter').value = userId;
+    document.getElementById('filter-badge').style.display = 'inline-block';
+    document.querySelectorAll('tr.user-row').forEach(tr => {
+      tr.classList.toggle('selected', Number(tr.dataset.uid) === userId);
+    });
+    refreshKpis();
+    renderTxns(filteredTxns());
+    showTab('txns');
+  }
+
+  function refreshKpis() {
+    const txns = filteredTxns();
+    const totalCLP = txns.reduce((s, t) => s + Number(t.amount_cents), 0);
+    const isFiltered = !!selectedUserId;
+
+    document.getElementById('kpi-users').textContent    = isFiltered ? 1 : allUsers.length;
+    document.getElementById('kpi-users-sub').textContent = isFiltered ? 'usuario seleccionado' : 'en la base de datos';
+    document.getElementById('kpi-txns').textContent     = txns.length;
+    document.getElementById('kpi-txns-sub').textContent  = isFiltered ? 'de este usuario' : 'transacciones totales';
+    document.getElementById('kpi-revenue').textContent  = '$' + totalCLP.toLocaleString('es-CL');
+    document.getElementById('kpi-time').textContent     = new Date().toLocaleTimeString('es-CL');
+  }
+
   // ── LOAD ──
   async function loadAll() {
     const btn = document.getElementById('btn-refresh');
     btn.classList.add('spinning');
     btn.disabled = true;
+    selectedUserId = null;
+    document.getElementById('user-filter').value = '';
+    document.getElementById('filter-badge').style.display = 'none';
 
     try {
       const [uRes, tRes] = await Promise.all([
@@ -372,20 +495,30 @@
       const uData = await uRes.json();
       const tData = await tRes.json();
 
-      renderUsers(uData.users || []);
-      renderTxns(tData.transactions || []);
+      allUsers = uData.users || [];
+      allTxns  = tData.transactions || [];
 
-      const totalCLP = (tData.transactions || []).reduce((s, t) => s + Number(t.amount_cents), 0);
-      document.getElementById('kpi-users').textContent   = (uData.users || []).length;
-      document.getElementById('kpi-txns').textContent    = (tData.transactions || []).length;
-      document.getElementById('kpi-revenue').textContent = '$' + totalCLP.toLocaleString('es-CL');
-      document.getElementById('kpi-time').textContent    = new Date().toLocaleTimeString('es-CL');
+      populateUserFilter();
+      renderUsers(allUsers);
+      renderTxns(allTxns);
+      refreshKpis();
     } catch (e) {
       alert('Error al cargar datos: ' + e.message);
     } finally {
       btn.classList.remove('spinning');
       btn.disabled = false;
     }
+  }
+
+  function populateUserFilter() {
+    const sel = document.getElementById('user-filter');
+    sel.innerHTML = '<option value="">— Todos los usuarios —</option>';
+    allUsers.forEach(u => {
+      const opt = document.createElement('option');
+      opt.value = u.user_id;
+      opt.textContent = `${u.first_name} ${u.last_name} (${u.email})`;
+      sel.appendChild(opt);
+    });
   }
 
   function renderUsers(users) {
@@ -395,7 +528,7 @@
       return;
     }
     tbody.innerHTML = users.map(u => `
-      <tr>
+      <tr class="user-row" data-uid="${u.user_id}" onclick="selectUser(${u.user_id})" title="Ver compras de ${u.first_name}">
         <td style="color:#aaa;font-size:.8rem">${u.user_id}</td>
         <td><strong>${u.first_name} ${u.last_name}</strong></td>
         <td>${u.email}</td>
@@ -416,8 +549,8 @@
     tbody.innerHTML = txns.map(t => `
       <tr>
         <td style="font-family:monospace;font-size:.8rem;color:#888">${t.external_ref}</td>
-        <td><strong>${t.first_name} ${t.last_name}</strong></td>
-        <td>${t.email}</td>
+        <td><strong>${t.first_name || '—'} ${t.last_name || ''}</strong></td>
+        <td>${t.email || '—'}</td>
         <td>${t.description}</td>
         <td><strong>$${Number(t.amount_cents).toLocaleString('es-CL')} ${t.currency}</strong></td>
         <td><span class="badge badge-${t.status === 'paid' ? 'paid' : 'pending'}">${t.status}</span></td>
